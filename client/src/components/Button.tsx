@@ -1,10 +1,5 @@
-
 const Button = () => {
-  return (
-    <div>
-      hi form button
-    </div>
-  )
-}
+	return <div>hi form button</div>;
+};
 
-export default Button
+export default Button;
