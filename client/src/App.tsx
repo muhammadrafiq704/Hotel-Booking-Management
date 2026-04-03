@@ -37,7 +37,7 @@ function App() {
 
 
 			</h1>
-      <span>biome lefthook and conventional commits setup!</span>
+      <span>biome lefthook and conventional commits setup!    </span>
 		</>
 	);
 }
