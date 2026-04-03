@@ -32,12 +32,12 @@ function App() {
 					color: "gray",
 				}}
 			>
-				waiting !  
-   
+				waiting !
+
 
 
 			</h1>
-      <span>biome lefthook and conventional commits setup!  bad commit   </span>
+			<span>biome lefthook and conventional commits setup!  bad commit   </span>
 		</>
 	);
 }
