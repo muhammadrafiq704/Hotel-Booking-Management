@@ -1,13 +1,13 @@
 {
-    "scripts": {
-    "lint": "biome check .",
-    "format": "biome format . --write",
-    "check": "biome check . --write"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "^2.4.10",
-    "@commitlint/cli": "^20.5.0",
-    "@commitlint/config-conventional": "^20.5.0",
-    "lefthook": "^2.1.4"
-  }
+	"scripts": {
+		"lint": "biome check .",
+		"format": "biome format . --write",
+		"check": "biome check . --write"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.4.10",
+		"@commitlint/cli": "^20.5.0",
+		"@commitlint/config-conventional": "^20.5.0",
+		"lefthook": "^2.1.4"
+	}
 }
