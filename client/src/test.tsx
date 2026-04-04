@@ -1,5 +1,5 @@
 const test = () => {
-	const a = 2;
+	const a = 2 + 2;
 	return (
 		<div>
 			<h1>{`Test Component ${a}`}</h1>
