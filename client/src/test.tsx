@@ -1,10 +1,10 @@
-
 const test = () => {
-  return (
-    <div>
-      <h1>Test Component</h1>
-    </div>
-  )
-}
+	const a = 2;
+	return (
+		<div>
+			<h1>{`Test Component ${a}`}</h1>
+		</div>
+	);
+};
 
-export default test
+export default test;
