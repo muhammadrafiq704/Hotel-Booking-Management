@@ -1,10 +1,16 @@
 pre-commit:
   parallel: true
   commands:
-    biome:
-      run: npx biome check --write .
+    client-biome:
+      run: npm run biome:fix --prefix client
+      glob: "client/src/**/*.{js,jsx,ts,tsx}"
+
+    server-biome:
+      run: npm run biome:fix --prefix server
+      glob: "server/src/**/*.{js,ts}"
 
 commit-msg:
+  parallel: true
   commands:
     commitlint:
       run: npx commitlint --edit {1}
