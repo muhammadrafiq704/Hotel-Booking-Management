@@ -1,13 +1,14 @@
 pre-commit:
   parallel: true
   commands:
-    client-biome:
-      run: npm run biome:fix --prefix client
-      glob: "client/src/**/*.{js,jsx,ts,tsx}"
+    biome:
+      run: npx biome check --write {staged_files}
+      glob: "{client,server}/**/*.{js,jsx,ts,tsx,json}"
 
-    server-biome:
-      run: npm run biome:fix --prefix server
-      glob: "server/src/**/*.{js,ts}"
+pre-push:
+  commands:
+    biome-check:
+      run: npx biome check .
 
 commit-msg:
   parallel: true
