@@ -1,14 +1,7 @@
-import "./App.css";
+import { Outlet } from "react-router-dom";
 
 function App() {
-	return (
-		<>
-			<h1 style={{ fontSize: "36px", fontWeight: 700 }}>
-				HOTEL BOOKING MANAGEMENT
-			</h1>
-			<span>Coming Soon!</span>
-		</>
-	);
+	return <Outlet />;
 }
 
 export default App;

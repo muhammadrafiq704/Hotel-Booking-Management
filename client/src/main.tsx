@@ -1,9 +1,25 @@
+import { ThemeProvider } from "@emotion/react";
+import { CssBaseline } from "@mui/material";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import App from "./App.tsx";
+import {
+	createBrowserRouter,
+	createRoutesFromElements,
+	RouterProvider,
+} from "react-router-dom";
+import appRoutes from "./routes/routes";
+import { appTheme } from "./theme";
 
-createRoot(document.getElementById("root")!).render(
+const root = document.getElementById("root");
+if (!root) throw new Error("Root element not found!");
+
+const router = createBrowserRouter(createRoutesFromElements(appRoutes));
+
+createRoot(root).render(
 	<StrictMode>
-		<App />
+		<ThemeProvider theme={appTheme}>
+			<CssBaseline enableColorScheme />
+			<RouterProvider router={router} />
+		</ThemeProvider>
 	</StrictMode>,
 );
