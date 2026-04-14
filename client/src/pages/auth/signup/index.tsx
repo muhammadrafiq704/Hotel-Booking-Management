@@ -1,3 +1,4 @@
+import action from "./action";
 import Signup from "./Signup";
 
-export { Signup as Component };
+export { action, Signup as Component };

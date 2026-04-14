@@ -1,13 +1,25 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Box } from "@mui/material";
+import { Box, Link } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-import CButton from "../../components/button/Button";
-import ControlledTextField from "../../components/inputfield/ControlledTextField";
-import CTypography from "../../components/typography/CTypography";
+import {
+	Link as RouterLink,
+	type SubmitOptions,
+	useActionData,
+	useNavigate,
+	useSubmit,
+} from "react-router-dom";
+import CButton from "@/components/button/Button";
+import ControlledTextField from "@/components/inputfield/ControlledTextField";
+import CTypography from "@/components/typography/CTypography";
+import useToast from "@/hooks/useToast";
+import type { ActionProps } from "@/types/types";
 import { type SignupFormValues, signupSchema } from "./Schema";
 
 const Signup = () => {
+	const submit = useSubmit();
+	const actionData = useActionData() as ActionProps;
+	const navigate = useNavigate();
+
 	const signupForm = useForm({
 		resolver: zodResolver(signupSchema),
 		defaultValues: {
@@ -20,9 +32,19 @@ const Signup = () => {
 	});
 
 	const onSubmit = (data: SignupFormValues) => {
-		console.log("Form Data:", data);
+		const submitOptions: SubmitOptions = {
+			method: "POST",
+			encType: "application/json",
+		};
+		submit(data, submitOptions);
 	};
-
+	useToast({
+		actionData,
+		onSuccess: () => {
+			navigate("/login");
+			signupForm.reset();
+		},
+	});
 	return (
 		<Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
 			<CTypography
@@ -30,10 +52,12 @@ const Signup = () => {
 					textAlign: "center",
 					fontSize: "2rem",
 					textTransform: "capitalize",
+					color: "white",
+					fontWeight: 700,
 				}}
 				variant="h4"
 			>
-				booking account
+				Register
 			</CTypography>
 			<Box sx={{ display: "flex", justifyContent: "center" }}>
 				<Box
@@ -81,19 +105,29 @@ const Signup = () => {
 						}}
 					>
 						<Link
+							component={RouterLink}
 							to="/login"
-							style={{
+							sx={{
 								textDecoration: "none",
 								fontSize: "0.875rem",
-								color: "#1976d2",
+								color: "white",
+								transition: "all 0.3s ease",
+								fontWeight: 500,
+								"&:hover": {
+									textDecoration: "underline",
+									color: (theme) => theme.palette.primary.main,
+								},
 							}}
 						>
 							Already have an account? Log in
 						</Link>
 					</Box>
-					<CButton variant="contained" type="submit">
-						Sign Up
-					</CButton>
+					<CButton
+						variant="contained"
+						type="submit"
+						isLoading={signupForm.formState.isSubmitting}
+						label="Sign Up"
+					/>
 				</Box>
 			</Box>
 		</Box>

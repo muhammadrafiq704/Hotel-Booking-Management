@@ -1,12 +1,15 @@
 import { createTheme } from "@mui/material";
 
 export const appTheme = createTheme({
+	typography: {
+		fontFamily: "Poppins, Arial, sans-serif",
+	},
 	palette: {
-		primary: { main: "#1976d2" },
-		secondary: { main: "#dc004e" },
+		primary: { main: "#1C274C" },
+		secondary: { main: "#F8F8FF" },
 		button: {
-			primary: "#1976d2",
-			secondary: "#dc004e",
+			primary: "#1C274C",
+			secondary: "#F8F8FF",
 		},
 		borderRadius: {
 			medium: "8px",
@@ -17,8 +20,9 @@ export const appTheme = createTheme({
 			mainBg: "#f5f5f5",
 		},
 		boxShadow: [
-			"0 4px 24px rgba(0, 0, 0, 0.1)",
-			"0 6px 30px rgba(0, 0, 0, 0.1)",
+			"0 4px 24px rgba(28, 39, 76, 0.1)",
+			"0 4px 10px rgba(28, 39, 76, 0.1)",
+			"0 2px 10px rgba(28, 39, 76, 0.1)",
 		],
 	},
 });
