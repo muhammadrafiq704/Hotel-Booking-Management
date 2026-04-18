@@ -5,7 +5,6 @@ import { Container } from "@/components";
 import CButton from "@/components/button/Button";
 import CTypography from "@/components/typography/CTypography";
 import { dummyBookings } from "./config";
-import VideoSlider from "./VideoSlider";
 import "simplebar-react/dist/simplebar.min.css";
 import HeroOverlay from "./HeroOverlay";
 
@@ -25,9 +24,12 @@ const Hero = () => {
 					alignItems: "center",
 					justifyContent: "center",
 					position: "relative",
+					backgroundImage: "url('/src/assets/bg/background-image-1.jpg')",
+					backgroundSize: "cover",
+					backgroundPosition: "center",
 				}}
 			>
-				<Box
+				{/* <Box
 					sx={{
 						position: "absolute",
 						top: 0,
@@ -37,17 +39,17 @@ const Hero = () => {
 						overflow: "hidden",
 						zIndex: 0,
 					}}
-				>
-					<VideoSlider />
-					<Box
-						sx={{
-							position: "absolute",
-							inset: 0,
-							backgroundColor: "rgba(0,0,0,0.4)",
-							zIndex: 1,
-						}}
-					/>
-				</Box>
+				> */}
+				{/* <VideoSlider /> */}
+				<Box
+					sx={{
+						position: "absolute",
+						inset: 0,
+						backgroundColor: "rgba(0,0,0,0.2)",
+						zIndex: 1,
+					}}
+				/>
+				{/* </Box> */}
 				<Container
 					sx={{
 						zIndex: 2,
@@ -117,7 +119,6 @@ const Hero = () => {
 							gap: 3,
 							overflow: "hidden",
 							boxShadow: (theme) => theme.palette.boxShadow?.[1],
-							// clipPath: "polygon(0 0, calc(100% - 120px) 0, calc(100% - 120px) 120px, 100% 120px, 100% 100%, 0 100%)"
 						}}
 					>
 						<Box

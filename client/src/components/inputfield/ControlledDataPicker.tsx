@@ -42,6 +42,10 @@ const ControlledDatePicker = <T extends FieldValues>({
 								sx={{
 									fontWeight: "bold",
 									color: (theme) => theme.palette.primary.main,
+									wordSpacing: 0.1,
+									letterSpacing: 0.1,
+									fontSize: "0.95rem",
+									lineHeight: 1.2,
 								}}
 							>
 								{label}

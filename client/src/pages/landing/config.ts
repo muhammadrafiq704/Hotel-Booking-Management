@@ -38,3 +38,8 @@ export const dummyBookings: Booking[] = [
 		bookingDate: "2024-08-01",
 	},
 ];
+
+export const options: { label: string; value: number }[] = Array.from(
+	{ length: 20 },
+	(_, i) => ({ label: `${i + 1}`, value: i + 1 }),
+);

@@ -15,5 +15,8 @@ export default defineConfig({
 		environment: "jsdom",
 		globals: true,
 		setupFiles: "./src/test/setup.ts",
+		alias: {
+			"@": path.resolve(__dirname, "./src"),
+		},
 	},
 } as UserConfig);

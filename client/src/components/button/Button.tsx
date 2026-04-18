@@ -2,7 +2,6 @@ import { Button, CircularProgress } from "@mui/material";
 
 interface CButtonProps {
 	variant?: "text" | "outlined" | "contained";
-	color?: "primary" | "secondary";
 	onClick?: () => void;
 	label: string;
 	type?: "button" | "submit" | "reset";
@@ -11,7 +10,6 @@ interface CButtonProps {
 
 const CButton = ({
 	variant = "contained",
-	color = "primary",
 	onClick,
 	label,
 	type = "button",
@@ -21,24 +19,23 @@ const CButton = ({
 	return variant === "contained" ? (
 		<Button
 			variant={variant}
-			color={color}
 			onClick={onClick}
 			type={type}
 			disabled={isLoading}
 			sx={{
 				borderRadius: (theme) => theme.palette.borderRadius.extraLarge,
-				// maxWidth: "200px",
-				// width: "100%",
 				boxShadow: (theme) => theme.palette.boxShadow?.[1],
 				px: 2.75,
 				py: 1,
 				fontWeight: "bold",
 				fontSize: "1rem",
-				// alignSelf: "center",
 				textTransform: "capitalize",
 				display: "flex",
 				justifyContent: "center",
 				alignItems: "center",
+				letterSpacing: -0.25,
+				wordSpacing: 0.5,
+				lineHeight: 1.8,
 			}}
 		>
 			{isLoading && <CircularProgress size={24} sx={{ mr: 1 }} />}
@@ -47,20 +44,27 @@ const CButton = ({
 	) : (
 		<Button
 			variant={variant}
-			color={color}
 			onClick={onClick}
 			type={type}
 			disabled={isLoading}
 			sx={{
 				borderRadius: (theme) => theme.palette.borderRadius.extraLarge,
-				// maxWidth: "200px",
-				// width: "100%",
-				boxShadow: (theme) => theme.palette.boxShadow?.[1],
+				// boxShadow: (theme) => theme.palette.boxShadow?.[1],
+				bgcolor: "transparent",
+				border: (theme) => `1.8px solid ${theme.palette.primary.main}`,
+				color: (theme) => theme.palette.primary.main,
+				"&:hover": {
+					bgcolor: (theme) => theme.palette.primary.main,
+					color: "white",
+				},
+				transition: "all 0.2s ease",
 				px: 2.75,
 				py: 1,
+				letterSpacing: -0.25,
+				wordSpacing: 0.5,
+				lineHeight: 1.8,
 				fontWeight: "bold",
 				fontSize: "1rem",
-				alignSelf: "center",
 				textTransform: "capitalize",
 				display: "flex",
 				justifyContent: "center",

@@ -1,7 +1,13 @@
 import Hero from "./Hero";
+import Passion from "./Passion";
 
 const Landing = () => {
-	return <Hero />;
+	return (
+		<>
+			<Hero />
+			<Passion />
+		</>
+	);
 };
 
 export default Landing;
