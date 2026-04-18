@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import Auth from "../models/auth.routes.js";
+import Auth from "../models/auth.model.js";
 import { generateJwtandSetCookie } from "../utils/generateJwtAndSetCookie.js";
 
 export const register = async (req, res) => {
@@ -53,6 +53,11 @@ export const login = async (req, res) => {
 	try {
 		const { email, password } = req.body;
 		//compare hashed password with the password in the database
+		if (!email || !password) {
+			return res
+				.status(400)
+				.json({ message: "Email and password are required", error: true });
+		}
 		const user = await Auth.findOne({ email });
 		if (!user) {
 			return res

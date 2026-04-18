@@ -11,7 +11,7 @@ const useToast = ({ actionData, onSuccess }: UseToastProps) => {
 	return useEffect(() => {
 		if (!actionData) return;
 		// debug tip
-		console.log("Toast effect triggered");
+		// console.log("Toast effect triggered");
 		if (actionData?.error) {
 			toast.error(actionData?.message, { toastId: "error-toast" });
 		} else {

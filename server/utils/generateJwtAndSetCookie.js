@@ -5,7 +5,6 @@ export const generateJwtandSetCookie = (userId, res) => {
 	const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
 		expiresIn: "7d",
 	});
-
 	// sett http only cookie with the token
 	res.cookie("token", token, {
 		httpOnly: true,

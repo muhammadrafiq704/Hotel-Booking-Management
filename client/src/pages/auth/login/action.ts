@@ -3,10 +3,10 @@ import HBMSApi from "../../../api/HBMSAPI";
 
 const action: ActionFunction = async ({ request }) => {
 	try {
-		const formData = await request.formData();
-
-		const response = await HBMSApi.post("/auth/login", formData);
-		console.log("API Response:", response.data);
+		const loginData = await request.json();
+		const response = await HBMSApi.post("/auth/login", loginData, {
+			withCredentials: true,
+		});
 
 		if (response.status !== 200) {
 			return {
