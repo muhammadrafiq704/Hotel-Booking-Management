@@ -12,25 +12,34 @@ const Footer = () => {
 		<Box
 			sx={(theme) => ({
 				width: "100%",
-				p: 6,
+				py: 6,
 				backgroundColor: theme.palette.primary.main,
 				color: theme.palette.secondary.main,
 				mt: 10,
 			})}
 		>
 			<Container>
-				<Grid container spacing={2}>
-					<Grid size={{ xs: 12, sm: 3 }}>
+				<Grid
+					container
+					rowSpacing={{ xs: 2, sm: 4, md: 6 }}
+					columnSpacing={{ xs: 2, sm: 4, md: 6 }}
+				>
+					<Grid size={{ xs: 12, sm: 6, md: 3 }}>
 						<LogoIcon width={120} height={120} />
 						<CTypography
 							variant="h6"
-							sx={{ fontSize: "1rem", lineHeight: 1.5, wordSpacing: 0.5 }}
+							sx={{
+								fontSize: "1rem",
+								lineHeight: 1.5,
+								wordSpacing: 0.5,
+								color: (theme) => theme.palette.primary.light,
+							}}
 						>
 							Hotel Booking Management System (HBMS) is a comprehensive solution
 							for managing hotel operations.
 						</CTypography>
 					</Grid>
-					<Grid size={{ xs: 12, sm: 3 }}>
+					<Grid size={{ xs: 12, sm: 6, md: 3 }}>
 						<CTypography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
 							Bookings
 						</CTypography>
@@ -51,7 +60,7 @@ const Footer = () => {
 							))}
 						</List>
 					</Grid>
-					<Grid size={{ xs: 12, sm: 3 }}>
+					<Grid size={{ xs: 12, sm: 6, md: 3 }}>
 						<CTypography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
 							Legals
 						</CTypography>
@@ -72,7 +81,7 @@ const Footer = () => {
 							))}
 						</List>
 					</Grid>
-					<Grid size={{ xs: 12, sm: 3 }}>
+					<Grid size={{ xs: 12, sm: 6, md: 3 }}>
 						<CTypography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
 							Contact Us
 						</CTypography>
@@ -141,7 +150,13 @@ const Footer = () => {
 							backgroundColor: "rgba(255, 255, 255, 0.2)",
 						}}
 					/>
-					<Grid size={{ xs: 12, sm: 12 }} sx={{ textAlign: "center" }}>
+					<Grid
+						size={{ xs: 12, sm: 12 }}
+						sx={{
+							textAlign: "center",
+							color: (theme) => theme.palette.primary.light,
+						}}
+					>
 						&copy; {new Date().getFullYear()} Hotel Booking Management. All
 						rights reserved.
 					</Grid>

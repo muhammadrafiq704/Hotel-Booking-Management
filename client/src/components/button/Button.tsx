@@ -1,4 +1,10 @@
-import { Button, CircularProgress } from "@mui/material";
+import {
+	Button,
+	CircularProgress,
+	type SxProps,
+	type Theme,
+} from "@mui/material";
+import { useMobile } from "@/hooks/useMobile";
 
 interface CButtonProps {
 	variant?: "text" | "outlined" | "contained";
@@ -6,6 +12,7 @@ interface CButtonProps {
 	label: string;
 	type?: "button" | "submit" | "reset";
 	isLoading?: boolean;
+	sx?: SxProps<Theme>;
 }
 
 const CButton = ({
@@ -14,7 +21,9 @@ const CButton = ({
 	label,
 	type = "button",
 	isLoading = false,
+	sx,
 }: CButtonProps) => {
+	const isMobile = useMobile();
 	// console.log('isLoading :>> ', isLoading);
 	return variant === "contained" ? (
 		<Button
@@ -23,16 +32,15 @@ const CButton = ({
 			type={type}
 			disabled={isLoading}
 			sx={{
+				...sx,
 				borderRadius: (theme) => theme.palette.borderRadius.extraLarge,
 				boxShadow: (theme) => theme.palette.boxShadow?.[1],
-				px: 2.75,
-				py: 1,
+				px: isMobile ? 1.25 : 2.75,
+				py: isMobile ? 0.5 : 1,
 				fontWeight: "bold",
-				fontSize: "1rem",
+				fontSize: isMobile ? "0.875rem" : "1rem",
 				textTransform: "capitalize",
-				display: "flex",
-				justifyContent: "center",
-				alignItems: "center",
+				textAlign: "center",
 				letterSpacing: -0.25,
 				wordSpacing: 0.5,
 				lineHeight: 1.8,
@@ -48,6 +56,7 @@ const CButton = ({
 			type={type}
 			disabled={isLoading}
 			sx={{
+				...sx,
 				borderRadius: (theme) => theme.palette.borderRadius.extraLarge,
 				// boxShadow: (theme) => theme.palette.boxShadow?.[1],
 				bgcolor: "transparent",
@@ -58,17 +67,15 @@ const CButton = ({
 					color: "white",
 				},
 				transition: "all 0.2s ease",
-				px: 2.75,
-				py: 1,
+				px: isMobile ? 2 : 2.75,
+				py: isMobile ? 0.5 : 1,
 				letterSpacing: -0.25,
 				wordSpacing: 0.5,
 				lineHeight: 1.8,
 				fontWeight: "bold",
-				fontSize: "1rem",
+				fontSize: isMobile ? "0.875rem" : "1rem",
 				textTransform: "capitalize",
-				display: "flex",
-				justifyContent: "center",
-				alignItems: "center",
+				textAlign: "center",
 			}}
 		>
 			{isLoading && <CircularProgress size={24} sx={{ mr: 1 }} />}

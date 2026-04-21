@@ -3,9 +3,11 @@ import { useForm } from "react-hook-form";
 import CButton from "@/components/button/Button";
 import ControlledDatePicker from "@/components/inputfield/ControlledDataPicker";
 import ControlledSelectOption from "@/components/inputfield/ControlledSelectOption";
+import { useMobile } from "@/hooks/useMobile";
 import { options } from "./config";
 
 const HeroOverlay = () => {
+	const isMobile = useMobile();
 	const { control } = useForm({
 		defaultValues: {
 			"check-in-date": null,
@@ -14,9 +16,18 @@ const HeroOverlay = () => {
 			adults: undefined,
 		},
 	});
+
+	const btnMobileCss = {
+		...(isMobile && { width: "100%" }),
+	};
+
 	return (
 		<Box
-			sx={{
+			sx={(theme) => ({
+				[theme.breakpoints.only("xs")]: {
+					position: "relative",
+					bottom: 200,
+				},
 				position: "absolute",
 				bottom: 0,
 				left: "50%",
@@ -25,7 +36,8 @@ const HeroOverlay = () => {
 				transform: "translate(-50%, 50%)",
 				px: 2,
 				zIndex: 2,
-			}}
+				// border: '1px solid red',
+			})}
 		>
 			<Box
 				component="form"
@@ -37,7 +49,7 @@ const HeroOverlay = () => {
 					borderRadius: (theme) => theme.shape.borderRadius,
 
 					display: "flex",
-					flexDirection: { xs: "column", md: "row" },
+					flexDirection: { xs: "column", sm: "row" },
 					gap: 2,
 					alignItems: "center",
 				}}
@@ -66,8 +78,13 @@ const HeroOverlay = () => {
 					options={options}
 					placeholder="Select Adults"
 				/>
-				<Box>
-					<CButton label="Search" type="submit" variant="outlined" />
+				<Box sx={{ alignSelf: { xs: "stretch", sm: "center" } }}>
+					<CButton
+						label="Search"
+						type="submit"
+						variant="outlined"
+						sx={btnMobileCss}
+					/>
 				</Box>
 			</Box>
 		</Box>

@@ -2,10 +2,12 @@ import { Box } from "@mui/material";
 import { Container } from "@/components";
 import CButton from "@/components/button/Button";
 import CTypography from "@/components/typography/CTypography";
+import { useMobile } from "@/hooks/useMobile";
 
 const Passion = () => {
+	const isMobile = useMobile();
 	return (
-		<Container sx={{ mt: { xs: 40, md: 20 } }}>
+		<Container sx={{ mt: { xs: 16, md: 20 } }}>
 			<Box
 				sx={{
 					display: "flex",
@@ -37,12 +39,19 @@ const Passion = () => {
 						Our Passion
 					</CTypography>
 					<Box>
-						<CTypography variant="h3" sx={{ fontWeight: 700, lineHeight: 1 }}>
+						<CTypography
+							sx={{
+								fontSize: isMobile ? "2rem" : "3rem",
+								fontWeight: 700,
+								lineHeight: 1,
+							}}
+						>
 							Capturing the Magic of{" "}
 						</CTypography>
 						<CTypography
-							variant="h3"
+							// variant="h3"
 							sx={{
+								fontSize: isMobile ? "2rem" : "3rem",
 								color: "#FFD700",
 								fontStyle: "italic",
 								fontWeight: 700,
