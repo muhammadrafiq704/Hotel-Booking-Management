@@ -6,12 +6,19 @@ import { upload } from "../config/multer.js";
 
 export const uploadFiles = (req, res, next) => {
 	upload(req, res, async (err) => {
-		// console.log('req.files :>> ', req.files);
 		try {
 			if (err instanceof multer.MulterError) {
-				return res.status(400).json({ error: true, message: err.message });
+				return res.status(400).json({
+					error: true,
+					message: err.message,
+					errorType: "MulterError",
+				});
 			} else if (err) {
-				return res.status(500).json({ error: true, message: err.message });
+				return res.status(500).json({
+					error: true,
+					message: err.message,
+					errorType: "UnknownError",
+				});
 			}
 
 			if (!req.files || req.files.length === 0) {
@@ -28,19 +35,16 @@ export const uploadFiles = (req, res, next) => {
 				const outputFileName = `room-${baseName}.webp`;
 				const outputPath = path.join("uploads", outputFileName);
 
-				// 🔥 Convert to webp
 				await sharp(file.path).webp({ quality: 80 }).toFile(outputPath);
 
-				// ❌ remove original file
 				fs.unlinkSync(file.path);
 
 				convertedFiles.push(outputPath);
 			}
-			// console.log('convertedFiles :>> ', convertedFiles);
 			req.convertedFiles = convertedFiles;
 			next();
 		} catch (error) {
-			console.log("error :>> ", error);
+			console.log("error in uploadFiles :>> ", error);
 			return res.status(500).json({
 				error: true,
 				message: "Error processing images",
