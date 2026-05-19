@@ -14,7 +14,6 @@ const Rooms = () => {
 		error: boolean;
 	};
 	const [searchTerm, setSearchTerm] = useSearchParams();
-	console.log("data :>> ", data);
 	const selectedTab = (searchTerm.get("type") || "all rooms") as RoomProps;
 
 	return (

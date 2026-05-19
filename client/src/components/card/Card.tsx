@@ -82,7 +82,12 @@ function CCard({
 			)}
 			{room?.images && (
 				<Box
-					sx={{ flex: 1, width: "100%", height: "100%", borderRadius: "16px" }}
+					sx={{
+						flex: 1,
+						border: "1px solid red",
+						borderRadius: "16px",
+						overflow: "hidden",
+					}}
 				>
 					<SwiperComponent images={room.images} />
 				</Box>

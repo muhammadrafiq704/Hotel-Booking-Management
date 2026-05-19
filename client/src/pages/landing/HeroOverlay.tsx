@@ -1,30 +1,11 @@
 import { Box } from "@mui/material";
-import { useForm } from "react-hook-form";
-import CButton from "@/components/button/Button";
-import ControlledDatePicker from "@/components/inputfield/ControlledDataPicker";
-import ControlledSelectOption from "@/components/inputfield/ControlledSelectOption";
-import { useMobile } from "@/hooks/useMobile";
-import { options } from "./config";
+import SearchResultForm from "@/layout/Compoenents/SearchResultForm";
 
 const HeroOverlay = () => {
-	const isMobile = useMobile();
-	const { control } = useForm({
-		defaultValues: {
-			"check-in-date": null,
-			"check-out-date": null,
-			children: undefined,
-			adults: undefined,
-		},
-	});
-
-	const btnMobileCss = {
-		...(isMobile && { width: "100%" }),
-	};
-
 	return (
 		<Box
 			sx={(theme) => ({
-				[theme.breakpoints.only("xs")]: {
+				[theme.breakpoints.down("md")]: {
 					position: "relative",
 					bottom: 200,
 				},
@@ -40,7 +21,6 @@ const HeroOverlay = () => {
 			})}
 		>
 			<Box
-				component="form"
 				sx={{
 					px: 4,
 					py: 2,
@@ -54,38 +34,7 @@ const HeroOverlay = () => {
 					alignItems: "center",
 				}}
 			>
-				<ControlledDatePicker
-					name="check-in-date"
-					control={control}
-					label="Check-in Date"
-				/>
-				<ControlledDatePicker
-					name="check-out-date"
-					control={control}
-					label="Check-out Date"
-				/>
-				<ControlledSelectOption
-					name="children"
-					control={control}
-					label="Children"
-					options={options}
-					placeholder="Select Children"
-				/>
-				<ControlledSelectOption
-					name="adults"
-					control={control}
-					label="Adults"
-					options={options}
-					placeholder="Select Adults"
-				/>
-				<Box sx={{ alignSelf: { xs: "stretch", sm: "center" } }}>
-					<CButton
-						label="Search"
-						type="submit"
-						variant="outlined"
-						sx={btnMobileCss}
-					/>
-				</Box>
+				<SearchResultForm orientation="row" />
 			</Box>
 		</Box>
 	);
