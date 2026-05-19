@@ -14,7 +14,7 @@ const router = express.Router();
 
 router.post("/create", VerifyUserToken, uploadFiles, createRoom);
 router.get("/", getAllRooms);
-router.get("/search", getRoomsBySearchQuery);
+router.get("/search-results", getRoomsBySearchQuery);
 router.get("/:id", getRoomById);
 router.put("/:id", VerifyUserToken, uploadFiles, updateRoom);
 router.delete("/:id", VerifyUserToken, deleteRoom);
