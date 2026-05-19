@@ -2,9 +2,17 @@ import axios from "axios";
 
 // Create an AXIOS instance
 const HBMSApi = axios.create({
-	baseURL: import.meta.env.HBMS_BASE_URL || "http://localhost:5000/api",
+	baseURL: import.meta.env.VITE_HBMS_BASE_URL || "http://localhost:5000/api",
 	headers: {
 		"Content-Type": "application/json",
+	},
+	timeout: 10000,
+});
+
+export const ImageUploadApi = axios.create({
+	baseURL: import.meta.env.VITE_HBMS_IMAGE_URL || "http://localhost:5000",
+	headers: {
+		"Content-Type": "multipart/form-data",
 	},
 	timeout: 10000,
 });

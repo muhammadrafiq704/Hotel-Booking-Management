@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 
 const RoomSchema = new mongoose.Schema(
 	{
+		title: String,
+		description: String,
 		roomNumber: {
 			type: String,
 			required: true,

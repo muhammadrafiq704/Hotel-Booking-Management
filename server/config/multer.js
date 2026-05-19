@@ -3,7 +3,7 @@ import path from "node:path";
 import multer from "multer";
 
 const storage = multer.diskStorage({
-	destination: (cb) => {
+	destination: (_req, _file, cb) => {
 		const dir = path.join("uploads", "rooms");
 
 		if (!fs.existsSync(dir)) {
@@ -12,13 +12,14 @@ const storage = multer.diskStorage({
 
 		cb(null, dir);
 	},
-	filename: (file, cb) => {
+
+	filename: (_req, file, cb) => {
 		const uniqueName = `${Date.now()}-${file.originalname}`;
 		cb(null, uniqueName);
 	},
 });
 
-const fileFilter = (file, cb) => {
+const fileFilter = (_req, file, cb) => {
 	const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
 
 	if (allowedTypes.includes(file.mimetype)) {
@@ -31,7 +32,7 @@ const fileFilter = (file, cb) => {
 export const upload = multer({
 	storage,
 	limits: {
-		fileSize: 5 * 1024 * 1024, //
+		fileSize: 5 * 1024 * 1024,
 		files: 5,
 	},
 	fileFilter,
