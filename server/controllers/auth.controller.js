@@ -59,6 +59,7 @@ export const login = async (req, res) => {
 				.json({ message: "Email and password are required", error: true });
 		}
 		const user = await Auth.findOne({ email });
+		console.log("user :>> ", user);
 		if (!user) {
 			return res
 				.status(400)
@@ -70,6 +71,8 @@ export const login = async (req, res) => {
 				.status(400)
 				.json({ message: "Invalid email or password", error: true });
 		}
+
+		console.log("user._id :>> ", user._id);
 
 		//coookie and token
 		generateJwtandSetCookie(user._id, res);

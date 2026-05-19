@@ -1,8 +1,9 @@
 import cron from "node-cron";
 import Booking from "../models/booking.model.js";
 
-cron.schedule("*/1 * * * *", async () => {
-	const expiryTime = new Date(Date.now() - 15 * 60 * 1000);
+cron.schedule("*/5 * * * *", async () => {
+	//cron runs every 5 minutes
+	const expiryTime = new Date(Date.now() - 15 * 60 * 1000); //15 minutes ago bookings are expired automatically
 
 	await Booking.updateMany(
 		{

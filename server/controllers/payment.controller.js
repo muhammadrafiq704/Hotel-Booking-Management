@@ -14,7 +14,10 @@ export const createPayment = async (req, res) => {
 				.json({ error: true, message: "Booking not found" });
 		}
 
-		if (booking.status !== "pending") {
+		if (
+			booking.status !== "pending" ||
+			booking.payment.status !== "cancelled"
+		) {
 			return res
 				.status(400)
 				.json({ error: true, message: "Booking not payable" });
@@ -39,10 +42,11 @@ export const createPayment = async (req, res) => {
 
 export const stripeWebhook = async (req, res) => {
 	const event = req.body;
-	// console.log('event :>> ', event);
+	console.log("event :>> ", event);
 	try {
 		if (event.type === "payment_intent.succeeded") {
 			const bookingId = event.data.object.metadata.bookingId;
+			console.log("bookingId :>> ", event.data.object.metadata.bookingId);
 
 			await Booking.findByIdAndUpdate(bookingId, {
 				status: "confirmed",

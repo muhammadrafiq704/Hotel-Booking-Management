@@ -15,6 +15,11 @@ declare module "@mui/material/styles" {
 			mainBg?: string;
 		};
 		boxShadow?: string[];
+		shades?: {
+			shade30: string;
+			shade20: string;
+			shade10: string;
+		};
 	}
 
 	interface Palette extends PaletteOptions {}

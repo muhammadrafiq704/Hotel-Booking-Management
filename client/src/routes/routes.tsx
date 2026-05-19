@@ -21,6 +21,11 @@ const appRoutes = (
 		</Route>
 		<Route element={<AppLayout />}>
 			<Route path={appPaths.ROOT} element={<Landing />} />
+			<Route path={appPaths.ROOMS} lazy={() => import("@/pages/rooms")} />
+			<Route
+				path={appPaths.ROOM_DETAILS}
+				lazy={() => import("@/pages/room-details")}
+			/>
 		</Route>
 	</Route>
 );

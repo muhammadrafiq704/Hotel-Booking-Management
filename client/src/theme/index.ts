@@ -24,5 +24,10 @@ export const appTheme = createTheme({
 			"0 4px 10px rgba(28, 39, 76, 0.1)",
 			"0 2px 10px rgba(28, 39, 76, 0.1)",
 		],
+		shades: {
+			shade30: "#B1BBC6",
+			shade20: "#C7D0D8",
+			shade10: "#DCE5E9",
+		},
 	},
 });

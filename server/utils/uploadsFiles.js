@@ -1,4 +1,4 @@
-import fs from "node:fs";
+import fs from "node:fs/promises";
 import path from "node:path";
 import multer from "multer";
 import sharp from "sharp";
@@ -22,25 +22,39 @@ export const uploadFiles = (req, res, next) => {
 			}
 
 			if (!req.files || req.files.length === 0) {
-				return res
-					.status(400)
-					.json({ error: true, message: "No files uploaded" });
+				return res.status(400).json({
+					error: true,
+					message: "No files uploaded",
+				});
 			}
 
 			const convertedFiles = [];
 
 			for (const file of req.files) {
+				const ext = path.extname(file.originalname).toLowerCase();
 				const baseName = path.parse(file.originalname).name;
 
-				const outputFileName = `room-${baseName}.webp`;
-				const outputPath = path.join("uploads", outputFileName);
+				let outputPath;
 
-				await sharp(file.path).webp({ quality: 80 }).toFile(outputPath);
+				if (ext === ".webp") {
+					// already webp → just move/keep
+					outputPath = file.path;
+				} else {
+					const outputFileName = `room-${baseName}.webp`;
+					outputPath = path.join("uploads/rooms", outputFileName);
 
-				fs.unlinkSync(file.path);
+					await sharp(file.path).webp({ quality: 80 }).toFile(outputPath);
 
-				convertedFiles.push(outputPath);
+					try {
+						await fs.unlink(file.path);
+					} catch (_e) {
+						console.warn("Could not delete temp file:", file.path);
+					}
+				}
+
+				convertedFiles.push(outputPath.replace(/\\/g, "/"));
 			}
+
 			req.convertedFiles = convertedFiles;
 			next();
 		} catch (error) {
