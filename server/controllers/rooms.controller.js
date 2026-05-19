@@ -1,3 +1,4 @@
+import Booking from "../models/booking.model.js";
 import Room from "../models/rooms.model.js";
 import { DeleteMulterFiles } from "../utils/deleteMulterFiles.js";
 
@@ -11,6 +12,8 @@ export const createRoom = async (req, res) => {
 			availability,
 			title,
 			description,
+			adults,
+			children,
 		} = req.body;
 
 		// check room number already exists
@@ -33,6 +36,8 @@ export const createRoom = async (req, res) => {
 			amenities: amenities,
 			availability: availabilityB,
 			images: req.convertedFiles,
+			adults,
+			children,
 		});
 
 		await room.save();
@@ -202,10 +207,7 @@ export const deleteRoom = async (req, res) => {
 
 export const getRoomsBySearchQuery = async (req, res) => {
 	try {
-		const { checkInDate, checkOutDate } = req.query;
-
-		console.log("req.query :>> ", req.query);
-
+		const { checkInDate, checkOutDate, adults, children } = req.query;
 		// validate required fields
 		if (!checkInDate || !checkOutDate) {
 			return res.status(400).json({
@@ -214,24 +216,15 @@ export const getRoomsBySearchQuery = async (req, res) => {
 			});
 		}
 
-		// parse DD/MM/YYYY format safely
-		const parseDate = (dateStr) => {
-			const [day, month, year] = dateStr.split("/");
-
-			return new Date(Date.UTC(Number(year), Number(month) - 1, Number(day)));
-		};
-
-		const checkIn = parseDate(checkInDate);
-		const checkOut = parseDate(checkOutDate);
-
-		console.log("checkIn :>> ", checkIn);
-		console.log("checkOut :>> ", checkOut);
+		// parse dates
+		const checkIn = new Date(checkInDate);
+		const checkOut = new Date(checkOutDate);
 
 		// validate parsed dates
 		if (Number.isNaN(checkIn.getTime()) || Number.isNaN(checkOut.getTime())) {
 			return res.status(400).json({
 				error: true,
-				message: "Invalid date format. Use DD/MM/YYYY",
+				message: "Invalid date format. Use YYYY-MM-DD",
 			});
 		}
 
@@ -243,20 +236,40 @@ export const getRoomsBySearchQuery = async (req, res) => {
 			});
 		}
 
-		// fetch rooms
-		const rooms = await Room.find({
-			availability: true,
-			// adults: { $gte: Number(adults || 0) },
-			// children: { $gte: Number(children || 0) },
+		// find already booked rooms
+		const bookingRoomIds = await Booking.find({
+			status: {
+				$in: ["pending", "confirmed"],
+			},
 
-			// room should already exist before booking date
-			createdAt: { $lte: checkIn },
+			isDeleted: false,
+			isActive: true,
+
+			// overlap detection
+			checkIn: { $lt: checkOut },
+			checkOut: { $gt: checkIn },
+		}).distinct("room");
+		// fetch available rooms
+		const rooms = await Room.find({
+			_id: {
+				$nin: bookingRoomIds,
+			},
+
+			availability: true,
+
+			adults: {
+				$gte: Number(adults || 1),
+			},
+
+			children: {
+				$gte: Number(children || 0),
+			},
 		}).sort({ createdAt: -1 });
 
 		if (!rooms.length) {
 			return res.status(404).json({
 				error: true,
-				message: "No rooms available for the selected dates",
+				message: "No rooms available for selected dates",
 			});
 		}
 

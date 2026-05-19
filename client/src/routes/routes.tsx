@@ -26,6 +26,11 @@ const appRoutes = (
 				path={appPaths.ROOM_DETAILS}
 				lazy={() => import("@/pages/room-details")}
 			/>
+			<Route
+				path={appPaths.SEARCH_RESULTS}
+				lazy={() => import("@/pages/search-results")}
+				// element={<SearchResults />}
+			/>
 		</Route>
 	</Route>
 );

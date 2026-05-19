@@ -4,4 +4,5 @@ export const appPaths = {
 	SIGN_UP: "signup",
 	ROOMS: "rooms",
 	ROOM_DETAILS: "rooms/:id",
+	SEARCH_RESULTS: "search-results",
 };

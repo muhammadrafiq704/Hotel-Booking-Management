@@ -14,6 +14,16 @@ const RoomSchema = new mongoose.Schema(
 			type: [String],
 			required: true,
 		},
+		adults: {
+			type: Number,
+			required: true,
+		},
+		children: {
+			type: Number,
+			required: true,
+			default: 0,
+			min: 0,
+		},
 		type: {
 			type: String,
 			enum: ["single", "double", "suite", "deluxe"],
@@ -36,6 +46,12 @@ const RoomSchema = new mongoose.Schema(
 	},
 	{ timestamps: true },
 );
+
+RoomSchema.index({
+	adults: 1,
+	children: 1,
+	availability: 1,
+});
 
 const Room = mongoose.model("Room", RoomSchema);
 

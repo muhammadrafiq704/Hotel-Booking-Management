@@ -8,12 +8,12 @@ export default function SwiperComponent({
 	images?: string[];
 }) {
 	const IMAGE_BASE_URL = ImageUploadApi.defaults.baseURL;
-
+	if (!images.length) return null;
 	return (
 		<PhotoProvider
 			speed={() => 800}
 			easing={(type) =>
-				type === 2
+				type === 1
 					? "cubic-bezier(0.36, 0, 0.66, -0.56)"
 					: "cubic-bezier(0.34, 1.56, 0.64, 1)"
 			}
@@ -22,17 +22,19 @@ export default function SwiperComponent({
 				style={{
 					width: "100%",
 					height: "100%",
-					maxHeight: 450,
+					// maxHeight: 450,
 					cursor: "pointer",
 				}}
 			>
-				{images.map((item) => (
+				{images.map((item, index) => (
 					<PhotoView key={item} src={`${IMAGE_BASE_URL}/${item}`}>
-						<img
-							src={`${IMAGE_BASE_URL}/${item}`}
-							alt=""
-							style={{ objectFit: "cover", width: "100%", height: "100%" }}
-						/>
+						{index < 1 ? (
+							<img
+								src={`${IMAGE_BASE_URL}/${item}`}
+								alt=""
+								style={{ objectFit: "cover", width: "100%", height: "100%" }}
+							/>
+						) : undefined}
 					</PhotoView>
 				))}
 			</div>
