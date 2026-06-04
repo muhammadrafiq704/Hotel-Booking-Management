@@ -20,6 +20,8 @@ export type Room = {
 	images: string[];
 	roomNumber: string;
 	availability: boolean;
+	children?: number;
+	adults?: number;
 };
 
 export type RoomProps =

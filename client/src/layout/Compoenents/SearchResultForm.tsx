@@ -1,5 +1,5 @@
 import { Box, Grid, Stack } from "@mui/material";
-import dayjs from "dayjs";
+import dayjs, { type Dayjs } from "dayjs";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import CButton from "@/components/button/Button";
@@ -8,8 +8,8 @@ import ControlledSelectOption from "@/components/inputfield/ControlledSelectOpti
 import { options } from "@/pages/landing/config";
 
 type SearchResultFormValues = {
-	"check-in-date": Date | null;
-	"check-out-date": Date | null;
+	checkInDate: Dayjs | null;
+	checkOutDate: Dayjs | null;
 	adults: number;
 	children: number;
 };
@@ -17,35 +17,44 @@ type SearchResultFormValues = {
 type SearchResultFormProps = {
 	onClose?: () => void;
 	orientation?: "row" | "column";
+	formData?: {
+		adults: number;
+		children: number;
+		checkInDate: Date | null;
+		checkOutDate: Date | null;
+	};
 };
 
 const SearchResultForm = ({
 	onClose,
 	orientation = "column",
+	formData,
 }: SearchResultFormProps) => {
 	const navigate = useNavigate();
 	const { control, handleSubmit } = useForm<SearchResultFormValues>({
 		// resolver: zodResolver(),
 		defaultValues: {
-			"check-in-date": null,
-			"check-out-date": null,
-			adults: 1,
-			children: 0,
+			checkInDate: formData?.checkInDate ? dayjs(formData.checkInDate) : null,
+			checkOutDate: formData?.checkOutDate
+				? dayjs(formData.checkOutDate)
+				: null,
+			adults: formData?.adults ?? 1,
+			children: formData?.children ?? 0,
 		},
 	});
 
 	const onSubmit = (data: SearchResultFormValues) => {
-		if (!data["check-in-date"] || !data["check-out-date"]) {
+		if (!data.checkInDate || !data.checkOutDate) {
 			// Handle validation error, e.g., show a message to the user
 			alert("Please select both check-in and check-out dates.");
 			return;
 		}
 		const params = new URLSearchParams({
-			checkInDate: data["check-in-date"]
-				? dayjs(data["check-in-date"]).format("YYYY-MM-DD")
+			checkInDate: data.checkInDate
+				? dayjs(data.checkInDate).format("YYYY-MM-DD")
 				: "",
-			checkOutDate: data["check-out-date"]
-				? dayjs(data["check-out-date"]).format("YYYY-MM-DD")
+			checkOutDate: data.checkOutDate
+				? dayjs(data.checkOutDate).format("YYYY-MM-DD")
 				: "",
 			adults: data.adults.toString(),
 			children: data.children.toString(),
@@ -55,19 +64,27 @@ const SearchResultForm = ({
 	};
 
 	return (
-		<form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
+		<form
+			onSubmit={handleSubmit(onSubmit)}
+			style={{
+				width: "100%",
+				padding: "16px",
+				backgroundColor: "#DCE5E9",
+				borderRadius: "24px",
+			}}
+		>
 			<Grid container>
 				<Stack direction={orientation} width="100%" spacing={2}>
 					<Grid size={12}>
 						<ControlledDatePicker
 							label="Check-in Date"
-							name="check-in-date"
+							name="checkInDate"
 							control={control}
 						/>
 					</Grid>
 					<Grid size={12}>
 						<ControlledDatePicker
-							name="check-out-date"
+							name="checkOutDate"
 							control={control}
 							label="Check-out Date"
 						/>

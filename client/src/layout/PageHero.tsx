@@ -47,7 +47,7 @@ const PageHero = ({
 				sx={{
 					position: "relative",
 					textAlign: "center",
-					maxWidth: 600,
+					maxWidth: 800,
 					display: "flex",
 					justifyContent: "center",
 					alignItems: "center",
@@ -58,7 +58,12 @@ const PageHero = ({
 				{title && (
 					<CTypography
 						variant="h2"
-						sx={{ fontWeight: 700, lineHeight: 1, fontSize: 64 }}
+						sx={{
+							fontWeight: 700,
+							lineHeight: 1,
+							fontSize: 64,
+							letterSpacing: -0.7,
+						}}
 					>
 						{title}
 					</CTypography>

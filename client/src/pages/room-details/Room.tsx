@@ -3,6 +3,7 @@ import { useLoaderData } from "react-router-dom";
 import { Container } from "@/components";
 import SwiperComponent from "@/components/slider/Swiper";
 import CTypography from "@/components/typography/CTypography";
+import SearchResultForm from "@/layout/Compoenents/SearchResultForm";
 import PageLayout from "@/layout/PageLayout";
 import type { Room } from "@/types/types";
 import { importantInfo } from "./config";
@@ -13,7 +14,7 @@ const Rooms = () => {
 		message: string;
 		error: boolean;
 	};
-	console.log("data :>> ", data);
+	// console.log("data :>> ", data);
 
 	const amenitiesIconsMap: Record<string, string> = {
 		"24 hours": "/src/assets/icons/24-hour.svg",
@@ -178,21 +179,18 @@ const Rooms = () => {
 										))}
 									</Box>
 								</Box>
-
-								{/*  search form */}
 								<Box
 									sx={{
 										width: {
 											xs: "100%",
 											md: "30%",
 										},
-										border: "1px solid blue",
 										position: "sticky",
 										top: 120,
 										alignSelf: "flex-start",
 									}}
 								>
-									30%
+									<SearchResultForm />
 								</Box>
 							</Box>
 						)}

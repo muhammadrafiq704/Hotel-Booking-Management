@@ -8,7 +8,7 @@ export const createBooking = async (req, res) => {
 	session.startTransaction();
 	try {
 		const { roomId, checkIn, checkOut, guests } = req.body;
-		// console.log('req.body :>> ', req.body);
+		console.log("req.body :>> ", req.body);
 
 		// validate checkin and checkout dates
 		const checkInDate = new Date(checkIn);
@@ -33,7 +33,7 @@ export const createBooking = async (req, res) => {
 
 		const conflictingBooking = await Booking.findOne({
 			room: roomId,
-			status: { $in: ["pending", "confirmed"] },
+			status: { $in: ["confirmed"] },
 			$or: [
 				{
 					checkIn: { $lt: checkOutDate },

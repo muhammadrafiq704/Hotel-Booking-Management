@@ -12,9 +12,18 @@ const SearchResults = () => {
 
 	const children = searchParams.get("children") || "";
 	const adults = searchParams.get("adults") || "";
+	const checkInDateStr = searchParams.get("checkInDate");
+	const checkOutDateStr = searchParams.get("checkOutDate");
+
+	const searchData = {
+		children: Number(children),
+		adults: Number(adults),
+		checkInDate: checkInDateStr ? new Date(checkInDateStr) : null,
+		checkOutDate: checkOutDateStr ? new Date(checkOutDateStr) : null,
+	};
 
 	const { data } = useLoaderData() as { data: Room[] };
-	console.log("data :>> ", data);
+	// console.log("data :>> ", data);
 
 	return (
 		<PageLayout title="Your Search Results">
@@ -38,19 +47,23 @@ const SearchResults = () => {
 						<Grid container spacing={4}>
 							<Grid
 								size={{ xs: 12, md: 4 }}
-								p={2}
 								sx={{
-									bgcolor: (theme) => theme.palette.shades?.shade10,
-									borderRadius: 4,
 									height: "fit-content",
+									position: "sticky",
+									top: "120px",
+									zIndex: 5,
 								}}
 							>
-								<SearchResultForm />
+								<SearchResultForm formData={searchData} />
 							</Grid>
 							<Grid size={{ xs: 12, md: 8 }}>
 								{data.map((room) => (
 									<Box key={room._id} mb={4}>
-										<CCard orientation="horizontal" room={room} />
+										<CCard
+											orientation="horizontal"
+											room={room}
+											actionType="book"
+										/>
 									</Box>
 								))}
 							</Grid>

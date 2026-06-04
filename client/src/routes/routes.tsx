@@ -31,6 +31,11 @@ const appRoutes = (
 				lazy={() => import("@/pages/search-results")}
 				// element={<SearchResults />}
 			/>
+			<Route
+				path={appPaths.CONFIRM_BOOKING}
+				lazy={() => import("@/pages/booking")}
+				// element={<SearchResults />}
+			/>
 		</Route>
 	</Route>
 );

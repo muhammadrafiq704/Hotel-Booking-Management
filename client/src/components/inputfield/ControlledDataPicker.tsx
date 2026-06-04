@@ -15,7 +15,7 @@ import CTypography from "../typography/CTypography";
 type ControlledDatePickerProps<T extends FieldValues> = {
 	name: Path<T>;
 	control: Control<T>;
-	label: string;
+	label?: string;
 	placeholder?: string;
 };
 
@@ -56,6 +56,39 @@ const ControlledDatePicker = <T extends FieldValues>({
 							value={field.value || null}
 							onChange={(newValue: Dayjs | null) => {
 								field.onChange(newValue);
+							}}
+							slotProps={{
+								actionBar: {
+									actions: ["clear", "accept"],
+								},
+								textField: {
+									sx: (theme) => ({
+										"& .MuiPickersInputBase-root": {
+											borderRadius: 4,
+											backgroundColor:
+												theme.palette.mode === "light" ? "#f5f5f5" : "#424242",
+										},
+
+										"& .MuiPickersOutlinedInput-notchedOutline": {
+											border: "none",
+										},
+
+										"& .MuiPickersOutlinedInput-root:hover .MuiPickersOutlinedInput-notchedOutline":
+											{
+												border: `1px solid ${theme.palette.primary.main}`,
+											},
+
+										"& .MuiPickersOutlinedInput-root.Mui-focused .MuiPickersOutlinedInput-notchedOutline":
+											{
+												border: `2px solid ${theme.palette.primary.main}`,
+											},
+
+										"& .MuiPickersOutlinedInput-root.Mui-focused": {
+											boxShadow: `0 0 0 4px ${theme.palette.primary.main}33`,
+											borderRadius: 4,
+										},
+									}),
+								},
 							}}
 						/>
 						<FormHelperText>{fieldState.error?.message}</FormHelperText>

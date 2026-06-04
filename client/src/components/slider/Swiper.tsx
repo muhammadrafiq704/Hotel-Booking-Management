@@ -18,26 +18,22 @@ export default function SwiperComponent({
 					: "cubic-bezier(0.34, 1.56, 0.64, 1)"
 			}
 		>
-			<div
-				style={{
-					width: "100%",
-					height: "100%",
-					// maxHeight: 450,
-					cursor: "pointer",
-				}}
-			>
-				{images.map((item, index) => (
-					<PhotoView key={item} src={`${IMAGE_BASE_URL}/${item}`}>
-						{index < 1 ? (
-							<img
-								src={`${IMAGE_BASE_URL}/${item}`}
-								alt=""
-								style={{ objectFit: "cover", width: "100%", height: "100%" }}
-							/>
-						) : undefined}
-					</PhotoView>
-				))}
-			</div>
+			{images.map((item, index) => (
+				<PhotoView key={item} src={`${IMAGE_BASE_URL}/${item}`}>
+					{index < 1 ? (
+						<img
+							src={`${IMAGE_BASE_URL}/${item}`}
+							alt=""
+							style={{
+								objectFit: "cover",
+								width: "100%",
+								height: "100%",
+								borderRadius: 8,
+							}}
+						/>
+					) : undefined}
+				</PhotoView>
+			))}
 		</PhotoProvider>
 	);
 }

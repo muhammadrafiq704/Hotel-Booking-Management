@@ -9,7 +9,7 @@ import {
 	Zoom,
 } from "@mui/material";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import type { Room } from "@/types/types";
 import CButton from "../button/Button";
 import { CChip } from "../index";
@@ -21,6 +21,7 @@ interface CCardProps {
 	variant?: CardOwnProps["variant"];
 	index?: number;
 	room?: Room;
+	actionType?: string;
 }
 
 function CCard({
@@ -28,10 +29,18 @@ function CCard({
 	variant = "elevation",
 	room,
 	index,
+	actionType,
 	...props
 }: CCardProps) {
 	const navigate = useNavigate();
 	const isEven = index !== undefined ? index % 2 === 0 : false;
+
+	const [searchParams] = useSearchParams();
+	const checkInDate = searchParams.get("checkInDate");
+	const checkOutDate = searchParams.get("checkOutDate");
+	const adults = searchParams.get("adults");
+	const children = searchParams.get("children");
+
 	return (
 		<Card
 			variant={variant}
@@ -84,7 +93,6 @@ function CCard({
 				<Box
 					sx={{
 						flex: 1,
-						border: "1px solid red",
 						borderRadius: "16px",
 						overflow: "hidden",
 					}}
@@ -178,11 +186,29 @@ function CCard({
 								{`PKR ${room?.price} / per night`}
 							</Box>
 						</Box>
-						<CButton
-							label="View Details"
-							sx={{ mt: 2 }}
-							onClick={() => navigate(`/rooms/${room?._id}`)}
-						/>
+						{actionType === "view" ? (
+							<CButton
+								label="View Details"
+								sx={{ mt: 2 }}
+								onClick={() => navigate(`/rooms/${room?._id}`)}
+							/>
+						) : actionType === "book" ? (
+							<CButton
+								label="Book"
+								sx={{ mt: 2 }}
+								onClick={() =>
+									navigate(
+										`/confirm-booking/${room?._id}?checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&adults=${adults}&children=${children}`,
+									)
+								}
+							/>
+						) : (
+							<CButton
+								label="View Details"
+								sx={{ mt: 2 }}
+								onClick={() => navigate(`/rooms/${room?._id}`)}
+							/>
+						)}
 					</Box>
 				</Stack>
 			</CardContent>

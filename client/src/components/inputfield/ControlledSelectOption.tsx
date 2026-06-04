@@ -55,10 +55,37 @@ const ControlledSelectOption = <T extends FieldValues>({
 						value={field.value ?? ""}
 						onChange={(event) => field.onChange(event.target.value)}
 						displayEmpty
+						sx={(theme) => ({
+							borderRadius: 4,
+
+							"& .MuiSelect-select": {
+								borderRadius: 4,
+								backgroundColor:
+									theme.palette.mode === "light" ? "#f5f5f5" : "#424242",
+							},
+
+							"& .MuiOutlinedInput-notchedOutline": {
+								border: "none",
+							},
+
+							"&:hover .MuiOutlinedInput-notchedOutline": {
+								border: `1px solid ${theme.palette.primary.main}`,
+							},
+
+							"&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+								border: `2px solid ${theme.palette.primary.main}`,
+							},
+
+							"&.Mui-focused": {
+								boxShadow: `0 0 0 4px ${theme.palette.primary.main}33`,
+								borderRadius: 4,
+							},
+						})}
 						renderValue={(selected) => {
 							if (!selected) {
 								return <span style={{ color: "#9e9e9e" }}>{placeholder}</span>;
 							}
+
 							const selectedOption = options.find(
 								(opt) => opt.value === selected,
 							);
