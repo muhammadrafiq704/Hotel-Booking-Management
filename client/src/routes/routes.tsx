@@ -4,6 +4,7 @@ import AppLayout from "@/layout/AppLayout";
 // import AuthLayout from "../pages/layout/AuthLayout";
 import AuthLayout from "@/layout/AuthLayout";
 import Landing from "@/pages/landing/Landing";
+import PaymentSucess from "@/pages/payment-success/PaymentSucess";
 import { appPaths } from "./appPaths";
 
 const appRoutes = (
@@ -34,7 +35,12 @@ const appRoutes = (
 			<Route
 				path={appPaths.CONFIRM_BOOKING}
 				lazy={() => import("@/pages/booking")}
-				// element={<SearchResults />}
+			/>
+			<Route path={appPaths.PAYMENT} lazy={() => import("@/pages/payment")} />
+			<Route
+				path={appPaths.PAYMENT}
+				// lazy={() => import("@/pages/payment")}
+				element={<PaymentSucess />}
 			/>
 		</Route>
 	</Route>

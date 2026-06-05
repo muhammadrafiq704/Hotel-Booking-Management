@@ -6,7 +6,7 @@ import {
 
 const router = express.Router();
 
-router.post("/create-intent", createPayment);
+router.post("/create-intent/:bookingId", createPayment);
 router.post("/webhook", stripeWebhook);
 
 export default router;

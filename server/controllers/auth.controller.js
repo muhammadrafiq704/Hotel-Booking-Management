@@ -59,7 +59,7 @@ export const login = async (req, res) => {
 				.json({ message: "Email and password are required", error: true });
 		}
 		const user = await Auth.findOne({ email });
-		console.log("user :>> ", user);
+		// console.log("user :>> ", user);
 		if (!user) {
 			return res
 				.status(400)

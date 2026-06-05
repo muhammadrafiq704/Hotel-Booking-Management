@@ -4,7 +4,7 @@ import HBMSApi from "@/api/HBMSAPI";
 const action: ActionFunction = async ({ request }) => {
 	try {
 		const bookingData = await request.json();
-		console.log("bookingData :>> ", bookingData);
+
 		const response = await HBMSApi.post("/bookings/", bookingData, {
 			withCredentials: true,
 		});

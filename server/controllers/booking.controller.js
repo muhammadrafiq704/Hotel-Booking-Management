@@ -7,12 +7,13 @@ export const createBooking = async (req, res) => {
 	const session = await mongoose.startSession();
 	session.startTransaction();
 	try {
-		const { roomId, checkIn, checkOut, guests } = req.body;
+		const { roomId, checkInDate, checkOutDate, adults, children } = req.body;
+
 		console.log("req.body :>> ", req.body);
 
 		// validate checkin and checkout dates
-		const checkInDate = new Date(checkIn);
-		const checkOutDate = new Date(checkOut);
+		const checkIn = new Date(checkInDate);
+		const checkOut = new Date(checkOutDate);
 		const today = new Date();
 		if (checkInDate >= checkOutDate) {
 			return res.status(400).json({
@@ -36,8 +37,8 @@ export const createBooking = async (req, res) => {
 			status: { $in: ["confirmed"] },
 			$or: [
 				{
-					checkIn: { $lt: checkOutDate },
-					checkOut: { $gt: checkInDate },
+					checkIn: { $lt: checkOut },
+					checkOut: { $gt: checkIn },
 				},
 			],
 		}).session(session);
@@ -53,6 +54,7 @@ export const createBooking = async (req, res) => {
 			(new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24);
 
 		const totalPrice = nights * room.price;
+		console.log("req.user._id :>> ", req.user._id);
 		const userId = req.user._id;
 
 		const booking = new Booking({
@@ -60,7 +62,7 @@ export const createBooking = async (req, res) => {
 			room: roomId,
 			checkIn,
 			checkOut,
-			guests: { adults: guests.adults, children: guests.children },
+			guests: { adults: Number(adults), children: Number(children) },
 			pricePerNight: room.price,
 			totalNights: nights,
 			totalPrice,
@@ -71,11 +73,12 @@ export const createBooking = async (req, res) => {
 
 		await session.commitTransaction();
 		session.endSession();
+		console.log("booking :>> ", booking);
 
-		res.status(201).json({
+		res.status(200).json({
 			error: false,
 			message: "Booking created",
-			data: booking,
+			data: booking._id,
 		});
 	} catch (error) {
 		await session.abortTransaction();

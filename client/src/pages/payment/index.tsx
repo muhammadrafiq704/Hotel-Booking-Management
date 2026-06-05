@@ -1,5 +1,5 @@
 import action from "./action";
-import Booking from "./Booking";
 import loader from "./loader";
+import Booking from "./Payment";
 
 export { action, Booking as Component, loader };

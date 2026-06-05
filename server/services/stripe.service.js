@@ -8,13 +8,42 @@ if (!process.env.STRIPE_SECRET_KEY) {
 }
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-// console.log('stripe :>> ', stripe);
-export const createPaymentIntent = async ({ amount, bookingId }) => {
-	return await stripe.paymentIntents.create({
-		amount: amount * 100, // cents
-		currency: "pkr",
+
+export const createCheckoutSession = async ({
+	amount,
+	bookingId,
+	roomTitle,
+}) => {
+	const session = await stripe.checkout.sessions.create({
+		ui_mode: "elements",
+
+		mode: "payment",
+
+		line_items: [
+			{
+				price_data: {
+					currency: "pkr",
+
+					product_data: {
+						name: roomTitle,
+					},
+
+					unit_amount: amount * 100,
+				},
+
+				quantity: 1,
+			},
+		],
+
 		metadata: {
 			bookingId: bookingId.toString(),
 		},
+
+		return_url: `${process.env.CLIENT_URL}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
 	});
+
+	return {
+		sessionId: session.id,
+		clientSecret: session.client_secret,
+	};
 };

@@ -1,14 +1,14 @@
-import type { ActionFunction } from "react-router-dom";
+import type { LoaderFunction } from "react-router-dom";
 import HBMSApi from "@/api/HBMSAPI";
 
-const action: ActionFunction = async ({ request }) => {
+const loader: LoaderFunction = async ({ params }) => {
+	const { id } = params;
+	console.log("booking id :>> ", id);
 	try {
-		const bookingData = await request.json();
-		console.log("bookingData :>> ", bookingData);
-		const response = await HBMSApi.post("/bookings/", bookingData, {
+		const response = await HBMSApi.post(`/payments/create-intent/${id}`, {
 			withCredentials: true,
 		});
-
+		console.log("response :>> ", response);
 		if (response.status !== 200) {
 			return {
 				error: true,
@@ -30,4 +30,4 @@ const action: ActionFunction = async ({ request }) => {
 	}
 };
 
-export default action;
+export default loader;
