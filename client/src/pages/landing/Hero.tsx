@@ -2,10 +2,10 @@ import { Box } from "@mui/material";
 import { Container } from "@/components";
 import "simplebar-react/dist/simplebar.min.css";
 import { useMobile } from "@/hooks/useMobile";
+import BgImage from "/src/assets/bg/background-image-1.jpg";
 import HeroOverlay from "./HeroOverlay";
 import IntroSection from "./IntroSection";
 import RecentBooking from "./RecentBooking";
-import BgImage from "/src/assets/bg/background-image-1.jpg"
 
 const Hero = () => {
 	const isMobile = useMobile();
