@@ -3,6 +3,7 @@ import { Container } from "@/components";
 import CButton from "@/components/button/Button";
 import CTypography from "@/components/typography/CTypography";
 import { useMobile } from "@/hooks/useMobile";
+import PassionImage from "/src/assets/images/hotel-image.jpg";
 
 const Passion = () => {
 	const isMobile = useMobile();
@@ -19,7 +20,7 @@ const Passion = () => {
 			>
 				<Box sx={{ flex: 1 }}>
 					<img
-						src="/src/assets/images/hotel-image.jpg"
+						src={PassionImage}
 						alt="hotel-image"
 						style={{ objectFit: "cover", width: "100%", height: "100%" }}
 						loading="lazy"

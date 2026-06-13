@@ -2,6 +2,7 @@ import { Box } from "@mui/material";
 import { Container } from "@/components";
 import "simplebar-react/dist/simplebar.min.css";
 import { useMobile } from "@/hooks/useMobile";
+import BgImage from "/src/assets/bg/background-image-1.jpg";
 import HeroOverlay from "./HeroOverlay";
 import IntroSection from "./IntroSection";
 import RecentBooking from "./RecentBooking";
@@ -29,7 +30,7 @@ const Hero = () => {
 					alignItems: "center",
 					justifyContent: "center",
 					position: "relative",
-					backgroundImage: "url('/src/assets/bg/background-image-1.jpg')",
+					backgroundImage: `url(${BgImage})`,
 					backgroundSize: "cover",
 					backgroundPosition: "center",
 					// border: '4px solid green'
