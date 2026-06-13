@@ -12,14 +12,12 @@ const Hero = () => {
 	const isMobileCss = {
 		display: "flex",
 		flexDirection: "column",
-		gap: 0,
+		gap: 4,
 	};
 	return (
 		<Box
 			sx={{
-				minHeight: "100vh",
 				position: "relative",
-				// border: '4px solid blue',
 				...(isMobile ? isMobileCss : {}),
 			}}
 		>
@@ -34,7 +32,7 @@ const Hero = () => {
 					backgroundImage: "url('/src/assets/bg/background-image-1.jpg')",
 					backgroundSize: "cover",
 					backgroundPosition: "center",
-					// border: '4px solid green',
+					// border: '4px solid green'
 				}}
 			>
 				{/* <Box
@@ -67,7 +65,7 @@ const Hero = () => {
 						alignItems: "center",
 						justifyContent: "space-between",
 						overflow: "hidden",
-						// pt: isMobile ? 14 : 0,
+						pt: isMobile ? 12 : 0,
 					}}
 				>
 					{/* intro section component   */}

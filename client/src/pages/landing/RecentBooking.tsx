@@ -15,7 +15,7 @@ const RecentBooking = () => {
 				borderRadius: 4,
 				maxWidth: "400px",
 				width: "100%",
-				height: isMobile ? "350px" : "400px",
+				height: isMobile ? "400px" : "400px",
 				border: "1px solid rgba(255,255,255,0.2)",
 				display: "flex",
 				flexDirection: "column",

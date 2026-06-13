@@ -3,7 +3,6 @@ import HBMSApi from "@/api/HBMSAPI";
 
 const loader: LoaderFunction = async ({ params }) => {
 	const { id } = params;
-	console.log("params :>> ", params);
 	try {
 		const response = await HBMSApi.get(`/rooms/${id}`, {
 			withCredentials: true,

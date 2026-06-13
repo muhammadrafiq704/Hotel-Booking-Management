@@ -111,12 +111,13 @@ const Rooms = () => {
 											</CTypography>
 											<Grid container spacing={2}>
 												{data.amenities.map((amenity) => (
-													<Grid key={amenity} size={{ xs: 2, md: 4 }}>
+													<Grid key={amenity} size={{ xs: 6, md: 4 }}>
 														<Box
 															sx={{
 																display: "flex",
 																flexDirection: "column",
 																alignItems: "center",
+																height: "100%",
 																justifyContent: "center",
 																gap: 2,
 																border: (theme) =>
@@ -133,7 +134,10 @@ const Rooms = () => {
 															/>
 															<CTypography
 																variant="h6"
-																sx={{ textTransform: "capitalize" }}
+																sx={{
+																	textTransform: "capitalize",
+																	textAlign: "center",
+																}}
 															>
 																{amenity}
 															</CTypography>

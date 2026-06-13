@@ -9,11 +9,6 @@ export const StyledNavLink = styled(NavLink)(({ theme }) => ({
 	letterSpacing: 0.1,
 	lineHeight: 1.8,
 
-	"&:hover": {
-		color: theme.palette.secondary.main,
-		// opacity: 0.6,
-	},
-
 	"&.active": {
 		fontWeight: 700,
 		color: theme.palette.secondary.main,
