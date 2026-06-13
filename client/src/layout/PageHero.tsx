@@ -2,6 +2,7 @@ import { Box } from "@mui/material";
 import { ImageUploadApi } from "@/api/HBMSAPI";
 import CButton from "@/components/button/Button";
 import CTypography from "@/components/typography/CTypography";
+import PlaceholderBgImage from "/src/assets/images/delux-room.webp";
 
 type PageHeroProps = {
 	title: string;
@@ -27,7 +28,7 @@ const PageHero = ({
 				display: "flex",
 				justifyContent: "center",
 				alignItems: "center",
-				backgroundImage: `url(${image ? `${IMAGE_BASE_URL}/${image}` : "/src/assets/images/delux-room.webp"})`,
+				backgroundImage: `url(${image ? `${IMAGE_BASE_URL}/${image}` : PlaceholderBgImage})`,
 				backgroundSize: "cover",
 				backgroundPosition: "bottom",
 				backgroundAttachment: "fixed",
