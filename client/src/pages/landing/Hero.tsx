@@ -5,6 +5,7 @@ import { useMobile } from "@/hooks/useMobile";
 import HeroOverlay from "./HeroOverlay";
 import IntroSection from "./IntroSection";
 import RecentBooking from "./RecentBooking";
+import BgImage from "/src/assets/bg/background-image-1.jpg"
 
 const Hero = () => {
 	const isMobile = useMobile();
@@ -29,7 +30,7 @@ const Hero = () => {
 					alignItems: "center",
 					justifyContent: "center",
 					position: "relative",
-					backgroundImage: "url('/src/assets/bg/background-image-1.jpg')",
+					backgroundImage: `url(${BgImage})`,
 					backgroundSize: "cover",
 					backgroundPosition: "center",
 					// border: '4px solid green'
