@@ -1,5 +1,6 @@
 import { Route } from "react-router-dom";
 import App from "@/App";
+import ErrorBoundary from "@/components/Error/ErrorBoundary";
 import AppLayout from "@/layout/AppLayout";
 // import AuthLayout from "../pages/layout/AuthLayout";
 import AuthLayout from "@/layout/AuthLayout";
@@ -8,11 +9,7 @@ import PaymentSucess from "@/pages/payment-success/PaymentSucess";
 import { appPaths } from "./appPaths";
 
 const appRoutes = (
-	<Route
-		path="/"
-		element={<App />}
-		errorElement={<div>Something went wrong!</div>}
-	>
+	<Route path="/" element={<App />} errorElement={<ErrorBoundary />}>
 		<Route element={<AuthLayout />}>
 			<Route path={appPaths.LOGIN} lazy={() => import("@/pages/auth/login")} />
 			<Route

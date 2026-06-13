@@ -22,8 +22,10 @@ const SearchResults = () => {
 		checkOutDate: checkOutDateStr ? new Date(checkOutDateStr) : null,
 	};
 
-	const { data } = useLoaderData() as { data: Room[] };
-	// console.log("data :>> ", data);
+	const { data, message } = useLoaderData() as {
+		data: Room[];
+		message: string;
+	};
 
 	return (
 		<PageLayout title="Your Search Results">
@@ -41,15 +43,15 @@ const SearchResults = () => {
 					>
 						{`Your Search Results for children: ${children} and Adults: ${adults}`}
 					</CTypography>
-					{data.length === 0 ? (
-						<NotFound message="No Rooms Found" />
+					{!data || data.length === 0 ? (
+						<NotFound message={message} />
 					) : (
 						<Grid container spacing={4}>
 							<Grid
 								size={{ xs: 12, md: 4 }}
 								sx={{
-									height: "fit-content",
-									position: "sticky",
+									height: { md: "fit-content" },
+									position: { md: "sticky" },
 									top: "120px",
 									zIndex: 5,
 								}}

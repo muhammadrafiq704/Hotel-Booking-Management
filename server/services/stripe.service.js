@@ -15,30 +15,24 @@ export const createCheckoutSession = async ({
 	roomTitle,
 }) => {
 	const session = await stripe.checkout.sessions.create({
+		payment_method_types: ["card"],
 		ui_mode: "elements",
-
 		mode: "payment",
-
 		line_items: [
 			{
 				price_data: {
 					currency: "pkr",
-
 					product_data: {
 						name: roomTitle,
 					},
-
 					unit_amount: amount * 100,
 				},
-
 				quantity: 1,
 			},
 		],
-
 		metadata: {
 			bookingId: bookingId.toString(),
 		},
-
 		return_url: `${process.env.CLIENT_URL}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
 	});
 

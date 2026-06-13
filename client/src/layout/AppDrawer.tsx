@@ -27,7 +27,6 @@ const AppDrawer = ({ isOpen, onClose }: AppDrawerProps) => {
 			>
 				<CloseIcon width={28} height={28} />
 			</IconButton>
-
 			<Box
 				sx={{
 					p: 2,
@@ -56,6 +55,7 @@ const AppDrawer = ({ isOpen, onClose }: AppDrawerProps) => {
 						<StyledNavLink
 							key={link.path}
 							to={link.path}
+							onClick={onClose}
 							sx={(theme) => ({
 								color: theme.palette.primary.main,
 								width: "100%",

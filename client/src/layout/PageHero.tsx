@@ -61,7 +61,7 @@ const PageHero = ({
 						sx={{
 							fontWeight: 700,
 							lineHeight: 1,
-							fontSize: 64,
+							fontSize: { xs: 42, md: 64 },
 							letterSpacing: -0.7,
 						}}
 					>
