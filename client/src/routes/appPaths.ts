@@ -7,5 +7,5 @@ export const appPaths = {
 	SEARCH_RESULTS: "search-results",
 	CONFIRM_BOOKING: "/confirm-booking/:id",
 	PAYMENT: "/payment/:id",
-	PAYMENT_SUCCESS: "/payment-success",
+	PAYMENT_SUCCESS: "/payment/success",
 };

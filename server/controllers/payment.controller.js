@@ -1,13 +1,13 @@
 import Booking from "../models/booking.model.js";
-import { createCheckoutSession } from "../services/stripe.service.js";
+import { createCheckoutSession, stripe } from "../services/stripe.service.js";
 
 export const createPayment = async (req, res) => {
 	try {
 		const { bookingId } = req.params;
-		console.log("bookingId :>> ", bookingId);
+		// console.log("bookingId :>> ", bookingId);
 
 		const booking = await Booking.findById(bookingId);
-		console.log("booking at payment:>> ", booking);
+		// console.log("booking at payment:>> ", booking);
 		if (!booking) {
 			return res
 				.status(404)
@@ -23,10 +23,10 @@ export const createPayment = async (req, res) => {
 		const checkoutSession = await createCheckoutSession({
 			amount: booking.totalPrice,
 			bookingId: booking._id,
-			roomTitle: room.title,
+			// roomTitle: room.title,
 		});
 
-		console.log("checkoutSession :>> ", checkoutSession);
+		// console.log("checkoutSession :>> ", checkoutSession);
 
 		res.json({
 			error: false,
@@ -43,12 +43,27 @@ export const createPayment = async (req, res) => {
 };
 
 export const stripeWebhook = async (req, res) => {
-	const event = req.body;
-	console.log("event :>> ", event);
+	const sig = req.headers["stripe-signature"];
+
+	let event;
+
 	try {
-		if (event.type === "payment_intent.succeeded") {
-			const bookingId = event.data.object.metadata.bookingId;
-			console.log("bookingId :>> ", event.data.object.metadata.bookingId);
+		event = stripe.webhooks.constructEvent(
+			req.body,
+			sig,
+			process.env.STRIPE_WEBHOOK_SECRET,
+		);
+	} catch (err) {
+		return res.status(400).send(`Webhook Error: ${err.message}`);
+	}
+
+	try {
+		console.log("Webhook:", event.type);
+
+		if (event.type === "checkout.session.completed") {
+			const session = event.data.object;
+
+			const bookingId = session.metadata.bookingId;
 
 			await Booking.findByIdAndUpdate(bookingId, {
 				status: "confirmed",
@@ -57,19 +72,41 @@ export const stripeWebhook = async (req, res) => {
 			});
 		}
 
-		if (event.type === "payment_intent.payment_failed") {
-			const bookingId = event.data.object.metadata.bookingId;
+		if (event.type === "checkout.session.expired") {
+			const session = event.data.object;
 
-			await Booking.findByIdAndUpdate(bookingId, {
+			await Booking.findByIdAndUpdate(session.metadata.bookingId, {
 				status: "cancelled",
-				isActive: false,
 				"payment.status": "failed",
+				isActive: false,
 			});
 		}
 
-		res.json({ received: true });
+		return res.json({ received: true });
 	} catch (err) {
-		console.log("Error in stripeWebhook :>> ", err);
+		console.log(err);
+		res.status(500).json({ error: true });
+	}
+};
+
+// controllers/paymentController.js
+export const verifyCheckoutSession = async (req, res) => {
+	// console.log("req.params.sessionId :>> ", req.params.sessionId);
+	try {
+		const sessionId = req.params.sessionId;
+
+		const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+		const bookingId = session.metadata.bookingId;
+
+		const booking = await Booking.findById(bookingId);
+
+		return res.json({
+			paid: session.payment_status === "paid",
+			booking,
+		});
+	} catch (err) {
+		console.log("Error in verifyCheckoutSession", err);
 		res.status(500).json({ error: true, message: err.message });
 	}
 };

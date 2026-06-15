@@ -7,23 +7,23 @@ if (!process.env.STRIPE_SECRET_KEY) {
 	throw new Error("Stripe secret key missing in .env");
 }
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export const createCheckoutSession = async ({
 	amount,
 	bookingId,
-	roomTitle,
+	// roomTitle,
 }) => {
 	const session = await stripe.checkout.sessions.create({
 		payment_method_types: ["card"],
-		ui_mode: "elements",
+		ui_mode: "embedded_page",
 		mode: "payment",
 		line_items: [
 			{
 				price_data: {
 					currency: "pkr",
 					product_data: {
-						name: roomTitle,
+						name: "Room Title",
 					},
 					unit_amount: amount * 100,
 				},
@@ -34,6 +34,8 @@ export const createCheckoutSession = async ({
 			bookingId: bookingId.toString(),
 		},
 		return_url: `${process.env.CLIENT_URL}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
+		// success_url: `${process.env.CLIENT_URL}/success`,
+		// cancel_url: `${process.env.CLIENT_URL}/cancel`,
 	});
 
 	return {

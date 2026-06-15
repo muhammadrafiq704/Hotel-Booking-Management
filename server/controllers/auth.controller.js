@@ -72,7 +72,7 @@ export const login = async (req, res) => {
 				.json({ message: "Invalid email or password", error: true });
 		}
 
-		console.log("user._id :>> ", user._id);
+		// console.log("user._id :>> ", user._id);
 
 		//coookie and token
 		generateJwtandSetCookie(user._id, res);

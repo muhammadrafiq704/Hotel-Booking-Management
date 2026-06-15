@@ -9,7 +9,7 @@ const loader: LoaderFunction = async ({ request }: LoaderFunctionArgs) => {
 		const response = await HBMSApi.get(`/rooms/search-results${params}`, {
 			withCredentials: true,
 		});
-		console.log("response :>> ", response);
+		// console.log("response :>> ", response);
 		if (response.status !== 200) {
 			return {
 				error: true,
