@@ -1,41 +1,57 @@
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import dotenv from "dotenv";
 import express from "express";
+
 import connectDB from "./config/mongodb.js";
 
-// routes
 import authRoutes from "./routes/auth.routes.js";
 import bookingRoutes from "./routes/booking.routes.js";
 import paymentRoutes from "./routes/payment.routes.js";
 import roomsRoutes from "./routes/rooms.routes.js";
 
-//cron automatically run and cancel pending bookings after 15 mins of booking if payment not done
 import "./jobs/booking.cron.js";
-
-import dotenv from "dotenv";
 
 dotenv.config({ quiet: true });
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+// DB
 connectDB();
 
+app.get("/", (_req, res) => {
+	res.json({
+		success: true,
+		message: "Hotel Booking API is running",
+	});
+});
+
 app.use("/uploads", express.static("uploads"));
+
 app.use(
 	cors({
-		origin: ["http://localhost:5174", "http://localhost:5173"],
+		origin: [
+			"http://localhost:5173",
+			"http://localhost:5174",
+			"https://hotel-booking-management-two.vercel.app",
+		],
 		credentials: true,
 	}),
 );
+
 app.use(express.json());
 app.use(cookieParser());
 
-//auth routes
 app.use("/api/auth", authRoutes);
 app.use("/api/rooms", roomsRoutes);
 app.use("/api/bookings", bookingRoutes);
 app.use("/api/payments", paymentRoutes);
 
-app.listen(PORT, () => {
-	console.log(`Server is running on port ${PORT}`);
-});
+export default app;
+
+if (process.env.NODE_ENV !== "production") {
+	app.listen(PORT, () => {
+		console.log(`Server is running on port ${PORT}`);
+	});
+}
