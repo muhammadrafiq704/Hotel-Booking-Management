@@ -35,7 +35,8 @@ const appRoutes = (
 			/>
 			<Route path={appPaths.PAYMENT} lazy={() => import("@/pages/payment")} />
 			<Route
-				path={appPaths.PAYMENT}
+				// path={appPaths.PAYMENT}
+				path="/payment/success"
 				// lazy={() => import("@/pages/payment")}
 				element={<PaymentSucess />}
 			/>
