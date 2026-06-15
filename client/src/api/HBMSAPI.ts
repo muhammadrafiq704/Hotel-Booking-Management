@@ -2,7 +2,11 @@ import axios from "axios";
 
 // Create an AXIOS instance
 const HBMSApi = axios.create({
-	baseURL: import.meta.env.VITE_HBMS_BASE_URL || "http://localhost:5000/api",
+	// baseURL: import.meta.env.VITE_HBMS_BASE_URL || "http://localhost:5000/api",
+	baseURL:
+		import.meta.env.MODE === "development"
+			? "http://localhost:5000/api"
+			: "https://server-apis-hbms.vercel.app/api",
 	headers: {
 		"Content-Type": "application/json",
 	},
