@@ -3,12 +3,10 @@ import HBMSApi from "@/api/HBMSAPI";
 
 const loader: LoaderFunction = async ({ params }) => {
 	const { id } = params;
-	console.log("booking id :>> ", id);
 	try {
 		const response = await HBMSApi.post(`/payments/create-intent/${id}`, {
 			withCredentials: true,
 		});
-		console.log("response :>> ", response);
 		if (response.status !== 200) {
 			return {
 				error: true,

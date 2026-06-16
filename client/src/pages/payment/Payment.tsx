@@ -16,9 +16,6 @@ const Booking = () => {
 		};
 	};
 
-	console.log("data.clientSecret :>> ", data.clientSecret);
-	console.log("data.bookingId :>> ", data.bookingId);
-
 	const clientSecret = data?.clientSecret;
 
 	if (!clientSecret) return <div>Loading...</div>;
