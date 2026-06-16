@@ -5,7 +5,6 @@ import AppLayout from "@/layout/AppLayout";
 // import AuthLayout from "../pages/layout/AuthLayout";
 import AuthLayout from "@/layout/AuthLayout";
 import Landing from "@/pages/landing/Landing";
-import PaymentSucess from "@/pages/payment-success/PaymentSucess";
 import { appPaths } from "./appPaths";
 
 const appRoutes = (
@@ -37,8 +36,8 @@ const appRoutes = (
 			<Route
 				// path={appPaths.PAYMENT}
 				path="/payment/success"
-				// lazy={() => import("@/pages/payment")}
-				element={<PaymentSucess />}
+				lazy={() => import("@/pages/payment-success")}
+				// element={<PaymentSucess />}
 			/>
 		</Route>
 	</Route>
