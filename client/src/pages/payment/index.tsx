@@ -1,5 +1,5 @@
 import action from "./action";
 import loader from "./loader";
-import Booking from "./Payment";
+import Payment from "./Payment";
 
-export { action, Booking as Component, loader };
+export { action, loader, Payment as Component };
