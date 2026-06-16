@@ -96,7 +96,7 @@ const Booking = () => {
 	// });
 
 	const onSubmit = (data: FieldValues) => {
-		console.log("data at onSubmit :>> ", data);
+		console.log("data at onSubmit from booking :>> ", data);
 		const submitOption: SubmitOptions = {
 			method: "POST",
 			encType: "application/json",
