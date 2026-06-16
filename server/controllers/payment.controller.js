@@ -46,8 +46,8 @@ export const stripeWebhook = async (req, res) => {
 	const sig = req.headers["stripe-signature"];
 
 	let event;
-	console.log("🔥 WEBHOOK HIT:", event.type);
-	console.log("🔥 Stripe Singnature:", sign);
+
+	console.log("🔥 Stripe Singnature:", sig);
 	try {
 		event = stripe.webhooks.constructEvent(
 			req.body,
@@ -55,12 +55,13 @@ export const stripeWebhook = async (req, res) => {
 			process.env.STRIPE_WEBHOOK_SECRET,
 		);
 	} catch (err) {
+		console.log("❌ Webhook signature error:", err.message);
 		return res.status(400).send(`Webhook Error: ${err.message}`);
 	}
 
-	try {
-		console.log("Webhook:", event.type);
+	console.log("🔥 WEBHOOK HIT:", event.type);
 
+	try {
 		if (event.type === "checkout.session.completed") {
 			const session = event.data.object;
 
@@ -85,7 +86,7 @@ export const stripeWebhook = async (req, res) => {
 
 		return res.json({ received: true });
 	} catch (err) {
-		console.log(err);
+		console.log("❌ Webhook handler error:", err);
 		res.status(500).json({ error: true });
 	}
 };
