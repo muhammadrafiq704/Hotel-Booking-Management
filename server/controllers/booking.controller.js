@@ -9,8 +9,6 @@ export const createBooking = async (req, res) => {
 	try {
 		const { roomId, checkInDate, checkOutDate, adults, children } = req.body;
 
-		console.log("req.body :>> ", req.body);
-
 		// validate checkin and checkout dates
 		const checkIn = new Date(checkInDate);
 		const checkOut = new Date(checkOutDate);
@@ -54,8 +52,9 @@ export const createBooking = async (req, res) => {
 			(new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24);
 
 		const totalPrice = nights * room.price;
-		console.log("req.user._id :>> ", req.user._id);
 		const userId = req.user._id;
+
+		const fullName = ` ${req.body.firstname} ${req.body.lastname}`;
 
 		const booking = new Booking({
 			user: userId,
@@ -66,6 +65,12 @@ export const createBooking = async (req, res) => {
 			pricePerNight: room.price,
 			totalNights: nights,
 			totalPrice,
+			customerName: fullName,
+			customerEmail: req.body.email,
+			customerPhone: req.body.phone,
+			country: req.body.country,
+			address: req.body.address,
+			city: req.body.city,
 			isActive: false, // will be set to true after successful payment
 		});
 
@@ -73,7 +78,6 @@ export const createBooking = async (req, res) => {
 
 		await session.commitTransaction();
 		session.endSession();
-		console.log("booking :>> ", booking);
 
 		res.status(200).json({
 			error: false,

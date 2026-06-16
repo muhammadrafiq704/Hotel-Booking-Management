@@ -4,16 +4,35 @@ const BookingSchema = new mongoose.Schema(
 	{
 		user: {
 			type: mongoose.Schema.Types.ObjectId,
-			ref: "User",
+			ref: "Auth",
 			required: true,
 			index: true,
 		},
-
 		room: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "Room",
 			required: true,
 			index: true,
+		},
+		//customer details
+		customerName: {
+			type: String,
+		},
+		customerEmail: {
+			type: String,
+			required: true,
+		},
+		customerPhone: {
+			type: String,
+		},
+		country: {
+			type: String,
+		},
+		address: {
+			type: String,
+		},
+		city: {
+			type: String,
 		},
 
 		checkIn: {

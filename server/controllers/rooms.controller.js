@@ -56,7 +56,6 @@ export const createRoom = async (req, res) => {
 };
 export const getAllRooms = async (req, res) => {
 	const { page, limit, type } = req.query;
-	// console.log('type :>> ', type);
 	try {
 		const skip = (page - 1) * limit; //rooms to skip for pagination based on page number and limit of rooms per page
 		// filter rooms by availability and sort by createdAt in descending order(newest first)
@@ -74,8 +73,6 @@ export const getAllRooms = async (req, res) => {
 			.sort({ createdAt: -1 });
 
 		const totalRooms = await Room.countDocuments({ availability: true });
-
-		// console.log('rooms :>> ', rooms);
 
 		if (!rooms.length) {
 			return res.status(200).json({
@@ -99,7 +96,6 @@ export const getAllRooms = async (req, res) => {
 };
 export const getRoomById = async (req, res) => {
 	const { id } = req.params;
-	console.log("id :>> ", id);
 	try {
 		const room = await Room.findById(id);
 		if (!room) {
