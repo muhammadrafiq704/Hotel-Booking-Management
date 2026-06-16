@@ -14,6 +14,7 @@ const PaymentSuccess = () => {
 
 	const [status, setStatus] = useState("loading");
 	const [booking, setBooking] = useState<BookingProps>();
+
 	useEffect(() => {
 		const verify = async () => {
 			try {

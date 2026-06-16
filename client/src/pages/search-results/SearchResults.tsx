@@ -26,7 +26,6 @@ const SearchResults = () => {
 		data: Room[];
 		message: string;
 	};
-
 	return (
 		<PageLayout title="Your Search Results">
 			<Container>

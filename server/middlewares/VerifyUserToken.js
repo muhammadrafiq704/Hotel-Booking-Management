@@ -3,7 +3,6 @@ import Auth from "../models/auth.model.js";
 
 const VerifyUserToken = async (req, res, next) => {
 	const token = req.cookies.token;
-	console.log("token :>> ", token);
 	try {
 		if (!token) {
 			return res

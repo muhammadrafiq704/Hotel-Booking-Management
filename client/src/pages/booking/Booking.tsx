@@ -34,12 +34,10 @@ const Booking = () => {
 		message: string;
 	};
 
-	// console.log("actionData :>> ", actionData);
 	const submit = useSubmit();
 
 	const navigate = useNavigate();
 
-	// console.log("data :>> ", data);
 	const roomId = data?._id;
 
 	const children = searchParams.get("children") || "";
@@ -96,7 +94,6 @@ const Booking = () => {
 	// });
 
 	const onSubmit = (data: FieldValues) => {
-		console.log("data at onSubmit from booking :>> ", data);
 		const submitOption: SubmitOptions = {
 			method: "POST",
 			encType: "application/json",

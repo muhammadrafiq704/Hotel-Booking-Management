@@ -1,13 +1,12 @@
 import Booking from "../models/booking.model.js";
 import { createCheckoutSession, stripe } from "../services/stripe.service.js";
+import { sendEmail } from "../utils/sendEmail.js";
 
 export const createPayment = async (req, res) => {
 	try {
 		const { bookingId } = req.params;
-		// console.log("bookingId :>> ", bookingId);
 
 		const booking = await Booking.findById(bookingId);
-		// console.log("booking at payment:>> ", booking);
 		if (!booking) {
 			return res
 				.status(404)
@@ -25,8 +24,6 @@ export const createPayment = async (req, res) => {
 			bookingId: booking._id,
 			// roomTitle: room.title,
 		});
-
-		// console.log("checkoutSession :>> ", checkoutSession);
 
 		res.json({
 			error: false,
@@ -46,10 +43,8 @@ export const stripeWebhook = async (req, res) => {
 	const sig = req.headers["stripe-signature"];
 	let event;
 
+	// verify stripe signature
 	try {
-		console.log("🔥 Stripe Signature:", sig);
-		console.log("🔥 Raw Body Type:", typeof req.body);
-
 		event = stripe.webhooks.constructEvent(
 			req.body,
 			sig,
@@ -60,49 +55,85 @@ export const stripeWebhook = async (req, res) => {
 		return res.status(400).send(`Webhook Error: ${err.message}`);
 	}
 
-	console.log("🔥 WEBHOOK HIT:", event.type);
-
 	try {
 		if (event.type === "checkout.session.completed") {
 			const session = event.data.object;
+			const bookingId = session.metadata?.bookingId;
 
-			const bookingId = session.metadata.bookingId;
+			if (!bookingId) {
+				console.log("❌ Missing bookingId in metadata");
+				return res.json({ received: true });
+			}
 
-			await Booking.findByIdAndUpdate(bookingId, {
-				status: "confirmed",
-				"payment.status": "paid",
-				isActive: true,
-			});
+			// Update booking
+			const booking = await Booking.findByIdAndUpdate(
+				bookingId,
+				{
+					status: "confirmed",
+					"payment.status": "paid",
+					isActive: true,
+				},
+				{ new: true },
+			).populate("room user");
+
+			if (!booking) {
+				console.log("❌ Booking not found:", bookingId);
+				return res.json({ received: true });
+			}
+
+			try {
+				await sendEmail({
+					to: booking.customerEmail,
+					booking,
+				});
+
+				console.log(
+					"📧 Confirmation email sent suceeful after booking update by stripe webhook",
+				);
+			} catch (err) {
+				console.log("❌ Email error:", err.message);
+			}
 		}
 
 		if (event.type === "checkout.session.expired") {
 			const session = event.data.object;
+			const bookingId = session.metadata?.bookingId;
 
-			await Booking.findByIdAndUpdate(session.metadata.bookingId, {
-				status: "cancelled",
-				"payment.status": "failed",
-				isActive: false,
-			});
+			if (!bookingId) return res.json({ received: true });
+
+			await Booking.findByIdAndUpdate(
+				bookingId,
+				{
+					status: "cancelled",
+					"payment.status": "failed",
+					isActive: false,
+				},
+				{ new: true },
+			);
+
+			console.log("⚠️ Booking cancelled due to expired session");
 		}
 
 		return res.json({ received: true });
 	} catch (err) {
 		console.log("❌ Webhook handler error:", err);
-		res.status(500).json({ error: true });
+		return res.status(500).json({ error: true });
 	}
 };
 
-// controllers/paymentController.js
 export const verifyCheckoutSession = async (req, res) => {
-	// console.log("req.params.sessionId :>> ", req.params.sessionId);
 	try {
 		const sessionId = req.params.sessionId;
-
 		const session = await stripe.checkout.sessions.retrieve(sessionId);
 
 		const bookingId = session.metadata.bookingId;
+		const booking = await Booking.findById(bookingId).populate("room user");
 
-		const booking = await Booking.findById(bookingId);
+		if (!booking) {
+			return res
+				.status(404)
+				.json({ error: true, message: "Booking not found" });
+		}
 
 		return res.json({
 			paid: session.payment_status === "paid",
