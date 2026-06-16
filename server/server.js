@@ -11,6 +11,7 @@ import paymentRoutes from "./routes/payment.routes.js";
 import roomsRoutes from "./routes/rooms.routes.js";
 
 import "./jobs/booking.cron.js";
+import { stripeWebhook } from "./controllers/payment.controller.js";
 
 dotenv.config({ quiet: true });
 
@@ -38,6 +39,11 @@ app.use(
 		],
 		credentials: true,
 	}),
+);
+app.post(
+	"/api/payments/webhook",
+	express.raw({ type: "application/json" }),
+	stripeWebhook,
 );
 
 app.use(express.json());

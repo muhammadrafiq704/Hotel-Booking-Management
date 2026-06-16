@@ -44,11 +44,12 @@ export const createPayment = async (req, res) => {
 
 export const stripeWebhook = async (req, res) => {
 	const sig = req.headers["stripe-signature"];
-
 	let event;
 
-	console.log("🔥 Stripe Singnature:", sig);
 	try {
+		console.log("🔥 Stripe Signature:", sig);
+		console.log("🔥 Raw Body Type:", typeof req.body);
+
 		event = stripe.webhooks.constructEvent(
 			req.body,
 			sig,
