@@ -1,82 +1,162 @@
-import { Box, CircularProgress, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
-import HBMSApi from "@/api/HBMSAPI";
+import { Box, CircularProgress, Grid, Typography } from "@mui/material";
+import { Suspense } from "react";
+import { Await, useLoaderData } from "react-router-dom";
+import { Container } from "@/components";
+import PageLayout from "@/layout/PageLayout";
+import type { Booking } from "@/types/types";
 
-type BookingProps = {
-	_id: string;
-	status: string;
+export type PaymentVerifyResponse = {
+	paid: boolean;
+	booking: Booking | null;
 };
 
 const PaymentSuccess = () => {
-	const [searchParams] = useSearchParams();
-	const sessionId = searchParams.get("session_id");
+	const data = useLoaderData() as {
+		result: Promise<PaymentVerifyResponse>;
+	};
 
-	const [status, setStatus] = useState("loading");
-	const [booking, setBooking] = useState<BookingProps>();
-
-	useEffect(() => {
-		const verify = async () => {
-			try {
-				if (!sessionId) {
-					setStatus("invalid");
-					return;
-				}
-
-				const res = await HBMSApi.get(`/payments/verify-session/${sessionId}`);
-
-				console.log("res :>> ", res);
-				console.log("res.data :>> ", res.data);
-				const data = await res.data;
-
-				if (data.paid) {
-					setStatus("success");
-					setBooking(data.booking);
-				} else {
-					setStatus("failed");
-				}
-			} catch (err) {
-				console.error("Error in payment success", err);
-				setStatus("failed");
-			}
-		};
-
-		verify();
-	}, [sessionId]);
-
-	if (status === "loading") {
+	function Loading() {
 		return (
-			<Box textAlign="center" mt={10}>
+			<PaymentSuccessWrapper>
 				<CircularProgress />
 				<Typography mt={2}>Verifying payment...</Typography>
-			</Box>
+			</PaymentSuccessWrapper>
 		);
 	}
 
-	if (status === "success") {
-		return (
-			<Box textAlign="center" mt={10}>
-				<Typography variant="h4" color="green">
-					Payment Successful 🎉
-				</Typography>
-
-				{booking && (
-					<>
-						<Typography>Booking ID: {booking._id}</Typography>
-						<Typography>Status: {booking.status}</Typography>
-					</>
-				)}
-			</Box>
-		);
-	}
-
+	const formatDate = (date: string) => {
+		return new Date(date).toLocaleDateString("en-GB", {
+			day: "2-digit",
+			month: "short",
+			year: "numeric",
+			timeZone: "UTC",
+		});
+	};
 	return (
-		<Box textAlign="center" mt={10}>
-			<Typography color="error">
-				Payment not completed or invalid session
-			</Typography>
-		</Box>
+		<Suspense fallback={<Loading />}>
+			<Await resolve={data.result}>
+				{(res: PaymentVerifyResponse) => {
+					console.log("res :>> ", res);
+					if (!res.paid || !res.booking) {
+						return <InvalidSession />;
+					}
+					return (
+						<PaymentSuccessWrapper>
+							<Grid container spacing={2}>
+								<Grid size={12} mb={2}>
+									<Typography variant="h4" color="green" textAlign="center">
+										🎉 Payment Successful/Booking Detail 🎉
+									</Typography>
+								</Grid>
+								<Grid size={{ xs: 12, sm: 4, md: 6 }}>
+									<Typography>
+										<strong>Customer Name:</strong> {res.booking.customerName}
+									</Typography>
+								</Grid>
+								<Grid size={{ xs: 12, sm: 4, md: 6 }}>
+									<Typography>
+										<strong>Customer Email:</strong> {res.booking.customerEmail}
+									</Typography>
+								</Grid>
+								<Grid size={{ xs: 12, sm: 4, md: 6 }}>
+									<Typography>
+										<strong>Check In Date:</strong>{" "}
+										{formatDate(res.booking.checkIn)}
+									</Typography>
+								</Grid>
+								<Grid size={{ xs: 12, sm: 4, md: 6 }}>
+									<Typography>
+										<strong>Check Out Date:</strong>{" "}
+										{formatDate(res.booking.checkOut)}
+									</Typography>
+								</Grid>
+								<Grid size={{ xs: 12, sm: 4, md: 6 }}>
+									<Typography>
+										<strong>Room Number:</strong> {res.booking.room.roomNumber}
+									</Typography>
+								</Grid>
+								<Grid size={{ xs: 12, sm: 4, md: 6 }}>
+									<Typography>
+										<strong>Room Type:</strong> {res.booking.room.type}
+									</Typography>
+								</Grid>
+								<Grid size={{ xs: 12, sm: 4, md: 6 }}>
+									<Typography>
+										<strong>Total Nights:</strong> {res.booking.totalNights}
+									</Typography>
+								</Grid>
+								<Grid size={{ xs: 12, sm: 4, md: 6 }}>
+									<Typography>
+										<strong>Total Price Per Night:</strong>{" "}
+										{res.booking.pricePerNight}
+									</Typography>
+								</Grid>
+								<Grid size={{ xs: 12, sm: 4, md: 6 }}>
+									<Typography>
+										<strong>Total Price:</strong> {res.booking.totalPrice}
+									</Typography>
+								</Grid>
+								<Grid size={{ xs: 12, sm: 4, md: 6 }}>
+									<Typography>
+										<strong>Booker Name:</strong> {res.booking.user.username}
+									</Typography>
+								</Grid>
+								<Grid size={{ xs: 12, sm: 4, md: 6 }}>
+									<Typography>
+										<strong>Booked Email:</strong> {res.booking.user.email}
+									</Typography>
+								</Grid>
+								<Grid size={{ xs: 12, sm: 4, md: 6 }}>
+									<Typography color="success" fontStyle="italic">
+										<strong>Booking Status:</strong> {res.booking.status}
+									</Typography>
+								</Grid>
+								<Grid size={{ xs: 12, sm: 4, md: 6 }}>
+									<Typography color="success" fontStyle="italic">
+										<strong>Payment Status:</strong>{" "}
+										{res.booking.payment.status}
+									</Typography>
+								</Grid>
+							</Grid>
+						</PaymentSuccessWrapper>
+					);
+				}}
+			</Await>
+		</Suspense>
 	);
+
+	function InvalidSession() {
+		return (
+			<PaymentSuccessWrapper>
+				<Typography color="error">
+					Payment not completed or invalid session
+				</Typography>
+			</PaymentSuccessWrapper>
+		);
+	}
 };
 
 export default PaymentSuccess;
+
+function PaymentSuccessWrapper({ children }: { children: React.ReactNode }) {
+	return (
+		<PageLayout title="Payment and Booking Confirmed">
+			<Container sx={{ mt: 4 }}>
+				<Box
+					sx={{
+						display: "flex",
+						justifyContent: "center",
+						alignItems: "center",
+						flexDirection: "column",
+						p: 4,
+						border: "1px dashed gray",
+						borderRadius: "20px",
+						bgcolor: "#DCE5E9",
+					}}
+				>
+					{children}
+				</Box>
+			</Container>
+		</PageLayout>
+	);
+}
