@@ -9,40 +9,32 @@ import {
 	Zoom,
 } from "@mui/material";
 import React from "react";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import type { Room } from "@/types/types";
+import { useNavigate } from "react-router-dom";
+import type { Booking } from "@/types/types";
 import CButton from "../button/Button";
 import { CChip } from "../index";
 import SwiperComponent from "../slider/Swiper";
 import CTypography from "../typography/CTypography";
 
-interface CCardProps {
+interface BookingCardProps {
 	orientation?: "horizontal" | "vertical";
 	variant?: CardOwnProps["variant"];
 	index?: number;
-	room?: Room;
+	booking?: Omit<Booking, "user">;
+	// booking?: Booking;
 	actionType?: string;
 }
 
-function CCard({
+function BookingCard({
 	orientation,
 	variant = "elevation",
-	room,
+	booking,
 	index,
 	actionType,
 	...props
-}: CCardProps) {
+}: BookingCardProps) {
 	const navigate = useNavigate();
 	const isEven = index !== undefined ? index % 2 === 0 : false;
-
-	const [searchParams] = useSearchParams();
-	const checkInDate = searchParams.get("checkInDate");
-	const checkOutDate = searchParams.get("checkOutDate");
-	const adults = searchParams.get("adults");
-	const children = searchParams.get("children");
-
-	const location = useLocation();
-	const pathName = location.pathname.replace(/^\//, "");
 
 	return (
 		<Card
@@ -75,7 +67,7 @@ function CCard({
 				},
 			}}
 		>
-			{room?.availability ? (
+			{booking?.status !== "confirmed" ? (
 				<Chip
 					label="Available"
 					sx={{
@@ -108,7 +100,7 @@ function CCard({
 					}}
 				/>
 			)}
-			{room?.images && (
+			{booking?.room?.images && (
 				<Box
 					sx={{
 						flex: 1,
@@ -116,7 +108,7 @@ function CCard({
 						overflow: "hidden",
 					}}
 				>
-					<SwiperComponent images={room.images} />
+					<SwiperComponent images={booking.room.images} />
 				</Box>
 			)}
 			<CardContent
@@ -145,10 +137,10 @@ function CCard({
 								lineHeight: 1.2,
 							}}
 						>
-							{room?.title ?? "Room Title"}
+							{booking?.room?.title ?? "Room Title"}
 						</CTypography>
 						<Tooltip
-							title={room?.description ?? "Room Description"}
+							title={booking?.room?.description ?? "Room Description"}
 							describeChild
 							placement="bottom-end"
 							slots={{
@@ -173,11 +165,11 @@ function CCard({
 									overflow: "hidden",
 								}}
 							>
-								{room?.description ?? "Room Description"}
+								{booking?.room?.description ?? "Room Description"}
 							</CTypography>
 						</Tooltip>
 						<Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mt: 2 }}>
-							{room?.amenities?.map((amenity) => (
+							{booking?.room?.amenities?.map((amenity) => (
 								<CChip key={amenity}>{amenity}</CChip>
 							))}
 						</Box>
@@ -202,36 +194,18 @@ function CCard({
 									py: 1,
 								}}
 							>
-								{`PKR ${room?.price} / per night`}
+								{`PKR ${booking?.room?.price} / per night`}
 							</Box>
 						</Box>
-						{actionType === "view" ? (
-							<CButton
-								label="View Details"
-								sx={{ mt: 2 }}
-								onClick={() => navigate(`/rooms/${room?._id}`)}
-							/>
-						) : actionType === "book" ? (
-							<CButton
-								label="Book"
-								sx={{ mt: 2 }}
-								onClick={() =>
-									navigate(
-										`/confirm-booking/${room?._id}?checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&adults=${adults}&children=${children}`,
-									)
-								}
-							/>
-						) : (
-							<CButton
-								label="View Details"
-								sx={{ mt: 2 }}
-								onClick={() => navigate(`/${pathName}/${room?._id}`)}
-							/>
-						)}
+						<CButton
+							label="View Details"
+							sx={{ mt: 2 }}
+							onClick={() => navigate(`/bookings/${booking?._id}`)}
+						/>
 					</Box>
 				</Stack>
 			</CardContent>
 		</Card>
 	);
 }
-export default React.memo(CCard);
+export default React.memo(BookingCard);

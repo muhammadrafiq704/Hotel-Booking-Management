@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { Await, useLoaderData } from "react-router-dom";
 import { Container } from "@/components";
 import PageLayout from "@/layout/PageLayout";
+import { formatDate } from "@/lib/formateDate";
 import type { Booking } from "@/types/types";
 
 export type PaymentVerifyResponse = {
@@ -24,14 +25,6 @@ const PaymentSuccess = () => {
 		);
 	}
 
-	const formatDate = (date: string) => {
-		return new Date(date).toLocaleDateString("en-GB", {
-			day: "2-digit",
-			month: "short",
-			year: "numeric",
-			timeZone: "UTC",
-		});
-	};
 	return (
 		<Suspense fallback={<Loading />}>
 			<Await resolve={data.result}>

@@ -10,10 +10,10 @@ export type LoaderProps = {
 };
 
 export type Room = {
-	_id: number;
+	_id: string;
 	title: string;
 	type: string;
-	name: string;
+	name?: string;
 	description: string;
 	price: number;
 	amenities: string[];

@@ -30,14 +30,17 @@ const appRoutes = (
 			/>
 			<Route
 				path={appPaths.CONFIRM_BOOKING}
-				lazy={() => import("@/pages/booking")}
+				lazy={() => import("@/pages/confirm-booking")}
 			/>
 			<Route path={appPaths.PAYMENT} lazy={() => import("@/pages/payment")} />
 			<Route
-				// path={appPaths.PAYMENT}
-				path="/payment/success"
+				path={appPaths.PAYMENT}
 				lazy={() => import("@/pages/payment-success")}
-				// element={<PaymentSucess />}
+			/>
+			<Route path={appPaths.BOOKINGS} lazy={() => import("@/pages/bookings")} />
+			<Route
+				path={appPaths.BOOKINGS_DETAIL}
+				lazy={() => import("@/pages/bookings/bookings-detail")}
 			/>
 		</Route>
 	</Route>

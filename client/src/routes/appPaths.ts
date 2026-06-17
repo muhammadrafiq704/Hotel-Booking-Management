@@ -8,4 +8,6 @@ export const appPaths = {
 	CONFIRM_BOOKING: "/confirm-booking/:id",
 	PAYMENT: "/payment/:id",
 	PAYMENT_SUCCESS: "/payment/success",
+	BOOKINGS: "/bookings",
+	BOOKINGS_DETAIL: "/bookings/:id",
 };
